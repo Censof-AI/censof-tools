@@ -14,7 +14,7 @@ trigger: /rfs-analyze
 
 # /rfs-analyze
 
-**Version 2.8.4 — 2026-09-03.** Check this line before reporting a problem: if it is older
+**Version 2.8.5 — 2026-09-29.** Check this line before reporting a problem: if it is older
 than the one the OPEX team is shipping, you are on a stale copy. It ships inside the
 **censof-mcp plugin** — nothing to unzip and no old copy to remove:
 
@@ -28,10 +28,15 @@ The Update button in the app does not work — a known Claude Code bug, not a fa
 
 > **State the version out loud, every time, at the top of every answer.** Not because the
 > reader asked — because a silent version number is a version number nobody checks. Open
-> with one line: *"Running rfs-analyze v2.8.4."* A stale copy is only caught if it is said,
+> with one line: *"Running rfs-analyze v2.8.5."* A stale copy is only caught if it is said,
 > not left to be noticed.
 
-*2.8.4 — two fixes. (1) The unrelated-attachment warning was written around one named
+*2.8.5 — one correction. The recurring loan-disbursement defect was quoted as a patch
+"proven across 4 occurrences, 2 clients, 2021–2026". A verified precedent list, recounted
+2026-09-29 from a colleague's audit, puts it at 10 closed tickets across 3 clients,
+2022–2026, at least 15 distinct loans; the fix-label section now says so. Nothing about how
+the skill works changed. Found by review, not by failure.
+2.8.4 — two fixes. (1) The unrelated-attachment warning was written around one named
 file, `Customer_Satisfaction_Survey_v3.docx`, which invited reading it as a rule about that
 filename. A live run on a Sponsor Refund ticket then found the second attachment was a stock
 photograph of a mountain, uploaded by the assigned agent, with a filename that gave nothing
@@ -861,9 +866,9 @@ Open the section with exactly one of these three labels:
 
 **The third label exists because the first two cannot both be true at once, and on a
 recurring defect they usually are.** Confirmed live on the loan-disbursement defect: the same
-3-table SQL patch is proven across 4 occurrences, 2 clients, 2021–2026 — genuinely a proven
+3-table SQL patch is proven across 10 closed tickets, 3 clients, 2022–2026 — genuinely a proven
 fix for the loan in front of you. But `APReleaseChecks_ExtensionLM`, the documented component
-responsible, has never been patched at the code level in any of those 4 tickets. Calling this
+responsible, has never been patched at the code level in any of those 10 tickets. Calling this
 **PROVEN FIX** overstates it (the defect will recur); calling it **PROPOSED FIX** understates
 it (the immediate correction is not a guess). Use the third label whenever the precedent shows
 the SAME data patch applied more than once with no code fix on record — and pair it with a

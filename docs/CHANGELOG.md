@@ -4,21 +4,34 @@ Newest first. Written for people using the plugins, not for whoever built them �
 each entry says what you will actually notice.
 
 **How to check what you are on:** ask the skill anything and read its first line —
-*"Running rfs-analyze v2.8.4."* Or run `claude plugin list`, which shows the plugin
+*"Running rfs-analyze v2.8.5."* Or run `claude plugin list`, which shows the plugin
 version.
 
 Two version numbers, deliberately different:
 
 | Number | What it counts |
 | --- | --- |
-| `censof-mcp 1.1.4` | the **plugin** — what `claude plugin update` installs |
-| `rfs-analyze v2.8.4` | the **skill** inside it — what the answers are written by |
+| `censof-mcp 1.1.6` | the **plugin** — what `claude plugin update` installs |
+| `rfs-analyze v2.8.5` | the **skill** inside it — what the answers are written by |
 
 The plugin can change without the skill changing, and vice versa.
 
 ---
 
 ## censof-mcp
+
+### 1.1.6 — rfs-analyze v2.8.5 · 29 Sep 2026
+
+**One corrected figure.** When the skill explains its "proven workaround, root cause not
+fixed" label, it uses the loan-disbursement defect (a loan still shows Ready after the money
+went out) as its example. It used to say that fix was proven across 4 tickets at 2 clients;
+a verified recount puts it at **10 closed tickets across 3 clients, 2022–2026**. Nothing
+about how the skill works or how answers look has changed.
+
+### 1.1.5 — rfs-analyze v2.8.4 · 3 Sep 2026
+
+**No change to the skill.** Added this changelog, and a `LATEST (...)` sentence at the end
+of the plugin's description, so `claude plugin list` shows what the newest version changed.
 
 ### 1.1.4 — rfs-analyze v2.8.4 · 3 Sep 2026
 
