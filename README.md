@@ -120,8 +120,8 @@ last fetched. If it still will not move, the two lines above always work.
 > winget install astral-sh.uv
 > ```
 >
-> The plugin no longer carries its own program; it runs the server from PyPI and
-> `uv` fetches it. Update without it and you get no Acumatica tools **and no
+> The plugin no longer carries its own program; `uv` fetches the server and runs
+> it. Update without it and you get no Acumatica tools **and no
 > error** — nothing on screen says why. Reopen your terminal afterwards so the
 > PATH change takes. `brew install uv` on a Mac; `censof-mcp` does not need it.
 

@@ -38,8 +38,7 @@ covers how to confirm it worked.
 
 **If you are updating the Acumatica plugin from rc14 or earlier, install this
 first.** Up to rc14 the Windows plugin carried its own program and needed
-nothing. It no longer ships one — it runs the server from PyPI, and `uv` is what
-fetches and runs it.
+nothing. It no longer ships one — `uv` is what fetches the server and runs it.
 
 ```powershell
 winget install astral-sh.uv
@@ -133,16 +132,26 @@ order.
 
 ## If the tools vanish right after updating
 
-Not a broken update. `uv` caches its view of the package index, so a version
-newer than that cache is invisible to it and the server refuses to start. Run
-this once and restart Claude:
+Run the plugin's own command by hand. The reason only appears in what it prints,
+which Claude does not show you:
 
 ```powershell
-uvx --refresh --from grp-mcp-plugin==<the version your plugin pins> grp-mcp
+uvx --from "grp-mcp-plugin @ https://github.com/Censof-AI/censof-tools/releases/download/grp-mcp-v0.81.0rc40/grp_mcp_plugin-0.81.0rc40-py3-none-any.whl" grp-mcp
 ```
 
-Full symptom and explanation: [TROUBLESHOOTING.md](TROUBLESHOOTING.md) — "No
-Acumatica tools right after updating the plugin".
+That is the line for 0.81.0-rc40. For any other version, copy the
+`grp-mcp-plugin @ ...` line out of the plugin's `.mcp.json`.
+
+A working server prints no error and waits for input: press Ctrl+C and restart
+Claude. The first start after an update downloads the server from GitHub and the
+libraries it uses from PyPI, so both have to be reachable from your PC. After
+that first download, rc40 also started with the network cut off when this was
+measured.
+
+**On 0.81.0-rc39 or earlier** the usual cause was different: `uv` kept an old
+copy of PyPI's list of versions and could not see the new one. The fix for that
+is in [TROUBLESHOOTING.md](TROUBLESHOOTING.md) — "No Acumatica tools right after
+updating the plugin".
 
 ## Confirming the update actually took
 

@@ -81,6 +81,24 @@ something you can fix locally.
 
 ### No Acumatica tools right after updating the plugin
 
+**From 0.81.0-rc40** the plugin names a file on this repository's Releases page
+instead of a version number on PyPI, so the cause described below, an old copy of
+PyPI's list of versions, should not arise. If the tools are missing after an
+update to rc40 or later, run the plugin's own command by hand to see the real
+error, which Claude does not show you:
+
+```powershell
+uvx --from "grp-mcp-plugin @ https://github.com/Censof-AI/censof-tools/releases/download/grp-mcp-v0.81.0rc40/grp_mcp_plugin-0.81.0rc40-py3-none-any.whl" grp-mcp
+```
+
+That is rc40's line. For another version, copy the `grp-mcp-plugin @ ...` line
+out of the plugin's `.mcp.json`. The first start after an update downloads that
+file from GitHub and the libraries the server uses from PyPI, so both have to be
+reachable from your PC. *A restart does not always retry*, further down, applies
+to every version.
+
+**On 0.81.0-rc39 and earlier:**
+
 The symptom is the plugin failing to start, with Claude reporting the server
 connection closed. The cause is not the new version and not your install: `uv`
 caches its view of the package index, and if that cache was filled before the new

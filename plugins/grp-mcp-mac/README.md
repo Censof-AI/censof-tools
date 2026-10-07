@@ -14,7 +14,7 @@ had to be a second plugin rather than a branch inside the first.
 As of rc15 `grp-mcp` ships no binary either. Both plugins now run the same line:
 
 ```
-uvx --from grp-mcp-plugin==0.81.0rc39 grp-mcp
+uvx --from "grp-mcp-plugin @ https://github.com/Censof-AI/censof-tools/releases/download/grp-mcp-v0.81.0rc40/grp_mcp_plugin-0.81.0rc40-py3-none-any.whl" grp-mcp
 ```
 
 which works the same on Windows, macOS and Linux. The reason for the split is
@@ -33,7 +33,7 @@ you would get every tool twice with no way to tell which one answered.
 Create your connections file once:
 
 ```
-uvx --from grp-mcp-plugin==0.81.0rc39 grp-mcp-setup
+uvx --from "grp-mcp-plugin @ https://github.com/Censof-AI/censof-tools/releases/download/grp-mcp-v0.81.0rc40/grp_mcp_plugin-0.81.0rc40-py3-none-any.whl" grp-mcp-setup
 ```
 
 It opens `http://127.0.0.1:8765` and writes to `~/.grp-mcp/connections.json`,
@@ -44,7 +44,9 @@ Full walkthrough: [docs/INSTALL-grp-mcp-mac.md](../../docs/INSTALL-grp-mcp-mac.m
 
 ## Why the version is pinned
 
-`--from grp-mcp-plugin==0.81.0rc39` names an exact version on purpose.
+The `--from` line names one exact file, `grp_mcp_plugin-0.81.0rc40-py3-none-any.whl`,
+on purpose. Up to 0.81.0-rc39 it named a version number on PyPI instead
+(`grp-mcp-plugin==0.81.0rc39`); those versions are still there.
 Unpinned, `uvx` would fetch whatever is newest at each launch, so the server
 could change underneath you between one start and the next while the plugin
 version stayed the same — untraceable the moment something breaks. New server

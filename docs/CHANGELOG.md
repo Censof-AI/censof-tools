@@ -93,6 +93,50 @@ skill.
 
 ## grp-mcp
 
+### Both Acumatica plugins at 0.81.0-rc40 - 7 Oct 2026
+
+**A record is checked before it is written to.** When the tools open a record by its key on the
+Modern UI side of Acumatica, they now confirm that the record that loaded is the one that was
+named, and only then write. Until now they did not look. On a screen that the site map sets to the
+Classic UI, the open could load a different record, and the change went to that one. Found on Row
+Sets (CS206010) on 2026R1: a save tried to create the row set a second time under another code,
+stopped only by the duplicate key, and a copy came out with one row set's rows and another's
+description. If the wrong record loads, the tools now cancel, ask again the way the browser's
+Modern UI does, and if the record is still not the one named they stop with an error and nothing
+is written.
+
+**Row Sets (CS206010) can be edited on 2026R1.** On the redesigned screen (2025R2 and later;
+measured on 2026R1 only) a row's account range and style are ordinary fields, not dialogs. Done
+through the tools and read back from the database: a row's account range, its bold, italic and
+font, its description, adding a row, deleting a row, and creating, copying and deleting a row set.
+Adding a row needs a row selected to add it after, unless the row set is empty. Nothing changes
+for the 2025R1 screen, which still uses dialogs.
+
+**Saving on that screen renumbers the row codes.** A row's code becomes its position (`01`, `02`
+and so on) and the formulas inside the row set are rewritten to match: `=@0110+@0120` became
+`=@03+@04`. The screen shows the new codes as soon as the row set is opened and stores them on
+the first save. Adding or deleting a row shifts the codes after it again. Whether anything outside
+the row set that refers to a row code is rewritten was not checked, so compare a report that uses
+the row set before and after.
+
+**Two smaller fixes.** A command that sent the screen back to its own page was run twice; it now
+runs once. A dialog that fills in its own fields as it opens (Copy Row Set does) no longer loses
+the values passed to it.
+
+**The server program now comes from GitHub.** From this version the plugin downloads it from a
+release on this repository's GitHub page instead of from PyPI. You update the same way as before.
+Two things are different. The command that opens the setup page by hand is longer, because it
+names a file instead of a version number:
+
+```
+uvx --from "grp-mcp-plugin @ https://github.com/Censof-AI/censof-tools/releases/download/grp-mcp-v0.81.0rc40/grp_mcp_plugin-0.81.0rc40-py3-none-any.whl" grp-mcp-setup
+```
+
+On Windows `Edit-Connections.cmd` works as before and you do not need to type it. And the first
+start after an update downloads from GitHub, so GitHub has to be reachable from your PC as well as
+PyPI, where the libraries the server uses still come from. 0.81.0-rc39 and earlier stay on PyPI
+and keep working. `pip install grp-mcp` and `uvx grp-mcp` stay at 0.80.10.
+
 ### Both Acumatica plugins at 0.81.0-rc39 - 22 Sep 2026
 
 **rc38 did not fix checking a write whose table name comes back as "Graph+DAC".** The rc38 entry

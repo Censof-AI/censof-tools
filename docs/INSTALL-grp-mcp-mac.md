@@ -14,7 +14,7 @@ command per operating system, so the answer could not be a fix inside `grp-mcp`;
 it had to be a second plugin.
 
 As of rc15 `grp-mcp` ships no binary either — both plugins run the identical
-Python code from PyPI, by the identical command. `grp-mcp-mac` stays published
+Python code, by the identical command. `grp-mcp-mac` stays published
 so that anyone already on it keeps receiving updates.
 
 **Install one or the other, never both.** They register the same server name and
@@ -71,7 +71,7 @@ The server reads its instances from `connections.json`. Create it with the same
 config page Windows users get:
 
 ```bash
-uvx --from grp-mcp-plugin==0.81.0rc39 grp-mcp-setup
+uvx --from "grp-mcp-plugin @ https://github.com/Censof-AI/censof-tools/releases/download/grp-mcp-v0.81.0rc40/grp_mcp_plugin-0.81.0rc40-py3-none-any.whl" grp-mcp-setup
 ```
 
 A browser tab opens on `http://127.0.0.1:8765`. Add your instance, click **Save
@@ -154,7 +154,8 @@ claude plugin update grp-mcp-mac@censof-tools
 Then restart Claude Code.
 
 The version of the server is **pinned in the plugin**, not resolved fresh each
-time — `uvx --from grp-mcp-plugin==0.81.0rc39`. That is deliberate: an unpinned
+time — its `.mcp.json` names one exact file on this repository's Releases page
+(a version number on PyPI up to 0.81.0-rc39). That is deliberate: an unpinned
 `uvx` would silently change the server underneath you between one launch and the
 next, and a plugin whose behaviour drifts without its version changing is
 untraceable when something breaks. New server versions arrive the same way
@@ -165,7 +166,7 @@ everything else does, by updating the plugin.
 ## Differences from the Windows plugin
 
 As of 0.81.0-rc15, **none that matter.** Both plugins run
-`uvx --from grp-mcp-plugin==<version> grp-mcp`, need `uv`, and open the
+`uvx --from "grp-mcp-plugin @ <release link>" grp-mcp`, need `uv`, and open the
 config page with `grp-mcp-setup`. The only remaining difference is where the
 config file lands — `%USERPROFILE%\grp-mcp\connections.json` on Windows,
 `~/.grp-mcp/connections.json` here.
@@ -174,9 +175,9 @@ config file lands — `%USERPROFILE%\grp-mcp\connections.json` on Windows,
 
 | | `grp-mcp` up to rc14 | both, from rc15 |
 | --- | --- | --- |
-| How it starts | bundled `grp-mcp.exe` | `uvx` fetches the wheel from PyPI |
+| How it starts | bundled `grp-mcp.exe` | `uvx` fetches the wheel: from PyPI up to rc39, from a GitHub release since rc40 |
 | Extra prerequisite | none | `uv` |
-| Config page | `grp-mcp.exe --setup` | `uvx --from grp-mcp-plugin==<version> grp-mcp-setup` |
+| Config page | `grp-mcp.exe --setup` | `uvx --from "grp-mcp-plugin @ <release link>" grp-mcp-setup` |
 | `find_tool` | unavailable — built without `fastembed` | works |
 | Repo cost per release | 23 MB, re-downloaded on every update | none |
 | Every launch | ~1.6 s, steady | ~1.2 s median, more variable |

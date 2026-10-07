@@ -8,13 +8,15 @@ the middle, and your credentials stay on your machine.
 
 ## Prerequisite — `uv`
 
-The plugin ships no binary. It runs the server from PyPI:
+The plugin ships no binary. It runs the server from a file attached to a release
+of this repository on GitHub:
 
 ```
-uvx --from grp-mcp-plugin==0.81.0rc39 grp-mcp
+uvx --from "grp-mcp-plugin @ https://github.com/Censof-AI/censof-tools/releases/download/grp-mcp-v0.81.0rc40/grp_mcp_plugin-0.81.0rc40-py3-none-any.whl" grp-mcp
 ```
 
-So [`uv`](https://docs.astral.sh/uv/) has to be installed once:
+So [`uv`](https://docs.astral.sh/uv/), which downloads that file and (from PyPI)
+the libraries the server uses, has to be installed once:
 
 ```
 winget install astral-sh.uv
@@ -32,8 +34,8 @@ You do not need Python. `uv` fetches its own.
 > `fastembed` excluded, which left `find_tool` — semantic search over all 120
 > tools — permanently unavailable on Windows. Bundling `fastembed` instead would
 > have taken the binary to roughly 120 MB, re-downloaded on every single update
-> because marketplace clones are shallow. Running from PyPI costs one `winget`
-> line and fixes it.
+> because marketplace clones are shallow. Running it through `uv` costs one
+> `winget` line and fixes it.
 
 ## Setup — run it once
 
@@ -41,7 +43,7 @@ The server needs a `connections.json` holding your Acumatica instance and its
 credentials. It can create one for you:
 
 ```
-uvx --from grp-mcp-plugin==0.81.0rc39 grp-mcp-setup
+uvx --from "grp-mcp-plugin @ https://github.com/Censof-AI/censof-tools/releases/download/grp-mcp-v0.81.0rc40/grp_mcp_plugin-0.81.0rc40-py3-none-any.whl" grp-mcp-setup
 ```
 
 That opens a config page in your browser. Add your instance, save, close the
@@ -87,7 +89,9 @@ later launches start in about a second. Nothing else downloads — as of rc17
 
 ## Why the version is pinned
 
-`--from grp-mcp-plugin==0.81.0rc39` names an exact version on purpose.
+The `--from` line names one exact file, `grp_mcp_plugin-0.81.0rc40-py3-none-any.whl`,
+on purpose. Up to 0.81.0-rc39 it named a version number on PyPI instead
+(`grp-mcp-plugin==0.81.0rc39`); those versions are still there.
 Unpinned, `uvx` would fetch whatever is newest at each launch, so the server
 could change underneath you between one start and the next while the plugin
 version stayed the same — untraceable the moment something breaks. New server

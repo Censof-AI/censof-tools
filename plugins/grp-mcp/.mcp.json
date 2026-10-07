@@ -4,7 +4,7 @@
       "command": "uvx",
       "args": [
         "--from",
-        "grp-mcp-plugin==0.81.0rc39",
+        "grp-mcp-plugin @ https://github.com/Censof-AI/censof-tools/releases/download/grp-mcp-v0.81.0rc40/grp_mcp_plugin-0.81.0rc40-py3-none-any.whl",
         "grp-mcp"
       ],
       "env": {

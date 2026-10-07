@@ -9,9 +9,10 @@ rem
 rem Why a launcher: nothing about how the server starts is stable enough to write
 rem into a document. It used to be a binary at a ~90-character path that people
 rem mistyped, in a cache folder carrying the VERSION. As of 0.81.0rc15 it is not a
-rem binary at all -- the plugin runs the server from PyPI through uvx, and the
-rem version is pinned inside the plugin's own .mcp.json. So this finds whichever
-rem of those is present rather than naming one.
+rem binary at all -- the plugin runs the server through uvx, and the version is
+rem pinned inside the plugin's own .mcp.json: a version on PyPI up to 0.81.0rc39,
+rem a link to a GitHub release of this repository from rc40. So this finds
+rem whichever of those is present rather than naming one.
 rem ---------------------------------------------------------------------------
 
 echo.
@@ -201,7 +202,7 @@ set "OTHER="
 if /i not "%CFG%"=="%PLAIN%" if exist "%PLAIN%" set "OTHER=%PLAIN%"
 
 if "%MODE%"=="uvx" (
-  echo   Using   : uvx --from !PIN! grp-mcp-setup
+  echo   Using   : uvx --from "!PIN!" grp-mcp-setup
 ) else (
   echo   Using   : !EXE!
 )
@@ -261,7 +262,8 @@ exit /b 0
 rem ---------------------------------------------------------------------------
 rem :readpin <path to a plugin .mcp.json>   ->   sets PIN, or leaves it unset
 rem
-rem Pulls "grp-mcp-plugin[search]==<version>" out of the args array, using a real
+rem Pulls the pin out of the args array -- "grp-mcp-plugin==VERSION" up to
+rem 0.81.0rc39, "grp-mcp-plugin @ LINK" from rc40 -- using a real
 rem JSON parser rather than string surgery. Both were tried. findstr plus
 rem character-stripping works only while the file is pretty-printed one array
 rem element per line: run against an installed cache copy, which writes

@@ -75,8 +75,9 @@ it still fails, sign out of Windows and back in.
 
 ### And `uv`
 
-The plugin ships no program of its own — it runs the Acumatica server from PyPI,
-and [`uv`](https://docs.astral.sh/uv/) is what fetches and runs it.
+The plugin ships no program of its own — it runs the Acumatica server from a file
+on this repository's Releases page, and [`uv`](https://docs.astral.sh/uv/) is what
+fetches and runs it.
 
 ```powershell
 winget install astral-sh.uv
@@ -161,7 +162,7 @@ Confirm:
 claude plugin list
 ```
 
-**Expect:** `grp-mcp@censof-tools` with a version like `0.81.0-rc39`.
+**Expect:** `grp-mcp@censof-tools` with a version like `0.81.0-rc40`.
 
 > **Also available:** `censof-mcp` in the same marketplace searches the GRP
 > knowledge base — closed RFS tickets, Acumatica documentation and the GRP
@@ -303,7 +304,7 @@ Then ask Claude:
 
 ```json
 {
-  "grp_mcp_version": "0.81.0rc39",
+  "grp_mcp_version": "0.81.0rc40",
   "instance": "staging",
   "tenant": "MyCompany 270326",
   "base_url": "https://acumatica.example.com/MyCompany",
@@ -453,11 +454,11 @@ state and is worse than not checking at all, because it looks like a check.
 
 ## Getting it wrong in ways that cost real time
 
-- **Do not suggest `pip install grp-mcp`.** The plugin already runs the package
-  from PyPI, at a version it pins on purpose. A `pip install` adds a *second*
-  copy at a different version, into whichever Python happens to be on PATH, and
-  the two fight over Acumatica licence seats. `uv` is the only install anyone
-  needs.
+- **Do not suggest `pip install grp-mcp`.** The plugin already runs the package,
+  at a version it pins on purpose. A `pip install` adds a *second* copy at a
+  different version (PyPI stays at 0.80.10), into whichever Python happens to be
+  on PATH, and the two fight over Acumatica licence seats. `uv` is the only
+  install anyone needs.
 - **Check `whoami` before any write.** A profile switch is invisible in the
   transcript, and several profiles in one file routinely point at different
   customers. Writes are also gated per profile — if one is refused, point at
