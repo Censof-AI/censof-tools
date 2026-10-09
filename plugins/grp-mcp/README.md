@@ -12,7 +12,7 @@ The plugin ships no binary. It runs the server from a file attached to a release
 of this repository on GitHub:
 
 ```
-uvx --from "grp-mcp-plugin @ https://github.com/Censof-AI/censof-tools/releases/download/grp-mcp-v0.81.0rc40/grp_mcp_plugin-0.81.0rc40-py3-none-any.whl" grp-mcp
+uvx --from "grp-mcp-plugin @ https://github.com/Censof-AI/censof-tools/releases/download/grp-mcp-v0.81.0rc41/grp_mcp_plugin-0.81.0rc41-py3-none-any.whl" grp-mcp
 ```
 
 So [`uv`](https://docs.astral.sh/uv/), which downloads that file and (from PyPI)
@@ -43,7 +43,7 @@ The server needs a `connections.json` holding your Acumatica instance and its
 credentials. It can create one for you:
 
 ```
-uvx --from "grp-mcp-plugin @ https://github.com/Censof-AI/censof-tools/releases/download/grp-mcp-v0.81.0rc40/grp_mcp_plugin-0.81.0rc40-py3-none-any.whl" grp-mcp-setup
+uvx --from "grp-mcp-plugin @ https://github.com/Censof-AI/censof-tools/releases/download/grp-mcp-v0.81.0rc41/grp_mcp_plugin-0.81.0rc41-py3-none-any.whl" grp-mcp-setup
 ```
 
 That opens a config page in your browser. Add your instance, save, close the
@@ -89,7 +89,7 @@ later launches start in about a second. Nothing else downloads — as of rc17
 
 ## Why the version is pinned
 
-The `--from` line names one exact file, `grp_mcp_plugin-0.81.0rc40-py3-none-any.whl`,
+The `--from` line names one exact file, `grp_mcp_plugin-0.81.0rc41-py3-none-any.whl`,
 on purpose. Up to 0.81.0-rc39 it named a version number on PyPI instead
 (`grp-mcp-plugin==0.81.0rc39`); those versions are still there.
 Unpinned, `uvx` would fetch whatever is newest at each launch, so the server

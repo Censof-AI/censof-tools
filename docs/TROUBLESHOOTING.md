@@ -88,10 +88,10 @@ update to rc40 or later, run the plugin's own command by hand to see the real
 error, which Claude does not show you:
 
 ```powershell
-uvx --from "grp-mcp-plugin @ https://github.com/Censof-AI/censof-tools/releases/download/grp-mcp-v0.81.0rc40/grp_mcp_plugin-0.81.0rc40-py3-none-any.whl" grp-mcp
+uvx --from "grp-mcp-plugin @ https://github.com/Censof-AI/censof-tools/releases/download/grp-mcp-v0.81.0rc41/grp_mcp_plugin-0.81.0rc41-py3-none-any.whl" grp-mcp
 ```
 
-That is rc40's line. For another version, copy the `grp-mcp-plugin @ ...` line
+That is rc41's line. For another version, copy the `grp-mcp-plugin @ ...` line
 out of the plugin's `.mcp.json`. The first start after an update downloads that
 file from GitHub and the libraries the server uses from PyPI, so both have to be
 reachable from your PC. *A restart does not always retry*, further down, applies

@@ -93,6 +93,33 @@ skill.
 
 ## grp-mcp
 
+### Both Acumatica plugins at 0.81.0-rc41 - 9 Oct 2026
+
+**An edit to an existing grid row was dropped on screens still on the Classic UI.** Asked to change
+a cell of a row that already exists, the modern-UI tools (`ui_update_grid_row`,
+`ui_update_grid_rows`) sent the change, got a normal reply, and nothing was saved. Found on Chart
+of Accounts (GL202500) on a 2026R1 site whose screens default to the Classic UI. On such a screen
+the tools were handed the grid with only its key column, 3 columns where the screen has 21, so a
+change to any other column had nothing to land on. The tools now notice a grid that comes back
+like that, read it again the way the browser's Modern UI does, and carry on that way. The edit is
+saved.
+
+**The same grid read back with empty values.** `ui_read_grid` returned every row with its key and
+nothing else, which reads as "these fields are empty". It now returns the real values, and says
+`marked_modern_ui: true` when it had to read the grid that way.
+
+**An edit the screen did not take is no longer reported as done.** With the read-back check on
+(the default) such an edit was already reported as not saved. With `prove_write=false` it came
+back as `ok: true`. It now comes back `ok: false`, with a warning naming the cells and telling you
+to read the row back.
+
+**What did not change.** Adding a row was never affected. Screens on the Modern UI behave as
+before. Edits through the screen API (`screen_submit`, `chart_of_accounts`) and the contract API
+(`create_or_update_entity`) were never affected.
+
+**Not yet checked.** A 2025R1 site, and deleting a row on a screen in this state. If an edit or a
+delete on a Classic-UI screen does not do what it says, read the record back and report it.
+
 ### Both Acumatica plugins at 0.81.0-rc40 - 7 Oct 2026
 
 **A record is checked before it is written to.** When the tools open a record by its key on the

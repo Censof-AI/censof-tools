@@ -136,17 +136,17 @@ Run the plugin's own command by hand. The reason only appears in what it prints,
 which Claude does not show you:
 
 ```powershell
-uvx --from "grp-mcp-plugin @ https://github.com/Censof-AI/censof-tools/releases/download/grp-mcp-v0.81.0rc40/grp_mcp_plugin-0.81.0rc40-py3-none-any.whl" grp-mcp
+uvx --from "grp-mcp-plugin @ https://github.com/Censof-AI/censof-tools/releases/download/grp-mcp-v0.81.0rc41/grp_mcp_plugin-0.81.0rc41-py3-none-any.whl" grp-mcp
 ```
 
-That is the line for 0.81.0-rc40. For any other version, copy the
+That is the line for 0.81.0-rc41. For any other version, copy the
 `grp-mcp-plugin @ ...` line out of the plugin's `.mcp.json`.
 
 A working server prints no error and waits for input: press Ctrl+C and restart
 Claude. The first start after an update downloads the server from GitHub and the
 libraries it uses from PyPI, so both have to be reachable from your PC. After
-that first download, rc40 also started with the network cut off when this was
-measured.
+that first download, the server also started with the network cut off when this
+was measured (rc40 and rc41).
 
 **On 0.81.0-rc39 or earlier** the usual cause was different: `uv` kept an old
 copy of PyPI's list of versions and could not see the new one. The fix for that
