@@ -93,6 +93,33 @@ skill.
 
 ## grp-mcp
 
+### Both Acumatica plugins at 0.81.0-rc42 - 12 Oct 2026
+
+**A customization call on a slow site no longer keeps an API seat.** Importing, exporting or
+publishing a customization project signs in for the length of the call, which takes one of the
+site's API seats. When the site was too slow to answer (right after a restart, or while a
+publication compiles), the call gave up, and so did the sign-out that follows it. The session
+then stayed open on the site with nothing able to close it, and its seat stayed taken until the
+site timed it out, about 20 minutes in the report this came from. Two such calls filled a
+two-seat site, and `release_sessions` answered that it had nothing to release. The plugin now
+keeps such a session and goes on trying to sign it out: by itself in the background, when you ask
+for `release_sessions`, and when the next sign-in is refused because the seats are full.
+
+**The error says the site did not answer.** The same slow site produced
+`backup failed before replace import:` with nothing after the colon, which read as a fault in the
+project. It now reads `no answer within 120 s (ReadTimeout)`, says that the site did not refuse
+the request, and says when the call may have left a seat taken. If you see it, wait until the
+site answers before trying again: each attempt takes a seat while it waits.
+
+**`release_sessions` and `whoami` show what is still open.** If the site still does not answer,
+`release_sessions` lists the sessions it could not close, so an empty `released` list no longer
+looks like "nothing is holding a seat". `whoami` lists them as `sessions_awaiting_logout`.
+
+**Not fixed.** If the site completes a sign-in whose answer never reaches the plugin, there is
+nothing to sign out with, and that seat lasts until the site times it out. The error says so when
+it may have happened. This was checked on a local 2026R1 site that answered normally, with the
+unanswered sign-out simulated; it has not been run against a site that was really slow.
+
 ### Both Acumatica plugins at 0.81.0-rc41 - 9 Oct 2026
 
 **An edit to an existing grid row was dropped on screens still on the Classic UI.** Asked to change
