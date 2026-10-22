@@ -112,6 +112,31 @@ skill.
 
 ## grp-mcp
 
+### Both Acumatica plugins at 0.81.0 - 22 Oct 2026
+
+**The first version without "rc".** Installing and updating work as before. The fixes below
+came out of a week of testing AP Invoice Processing.
+
+**A save that failed no longer leaves its row behind for the next one.** On a screen driven
+through the screen API (`screen_submit`), adding a row and then running an action that failed
+(Test Connection on Document Recognition Preferences, in the report) left the new row waiting
+in the plugin's session. The next save on that screen stored it, and in one measurement stored
+it ten times. The plugin now throws away what a failed, rehearsed (`dry_run`) or unsaved call
+left waiting, and says so (`staged_discarded`).
+
+**Clearing a field works.** Sending null to clear a field or a grid cell was refused with
+"...raised at least one error", because the plugin sent it as the text "None". It now clears the
+field, and the check after the save confirms it. An empty string ("") is still refused for a
+lookup such as an account; the error now says to send null instead.
+
+**A Yes/No question is no longer answered "OK".** When an action asked Yes/No first (Recognize
+on a document already read), the default answer, OK, was not one of its buttons: nothing ran,
+and the call came back as if it had. The plugin now leaves such a question unanswered and
+returns it with the answers it offers, so you can choose Yes or No.
+
+**`screen_get` says when there may be more rows.** It returns 10 rows unless asked for more, and
+said nothing when there were more. It now says `may_have_more`.
+
 ### Both Acumatica plugins at 0.81.0-rc42 - 12 Oct 2026
 
 **A customization call on a slow site no longer keeps an API seat.** Importing, exporting or
