@@ -14,7 +14,7 @@ trigger: /rfs-analyze
 
 # /rfs-analyze
 
-**Version 2.9 — 2026-10-22.** Check this line before reporting a problem: if it is older
+**Version 2.9.1 — 2026-10-22.** Check this line before reporting a problem: if it is older
 than the one the OPEX team is shipping, you are on a stale copy. It ships inside the
 **censof-mcp plugin** — nothing to unzip and no old copy to remove:
 
@@ -28,10 +28,15 @@ The Update button in the app does not work — a known Claude Code bug, not a fa
 
 > **State the version out loud, every time, at the top of every answer.** Not because the
 > reader asked — because a silent version number is a version number nobody checks. Open
-> with one line: *"Running rfs-analyze v2.9."* A stale copy is only caught if it is said,
+> with one line: *"Running rfs-analyze v2.9.1."* A stale copy is only caught if it is said,
 > not left to be noticed.
 
-*2.9 — open the tickets support staff linked BY HAND, before searching. `fetch_ticket`
+*2.9.1: one figure corrected. Similarity search misses about HALF of the hand-linked
+tickets, not 4 in 10. The old 0.583 came from one 60-pair sample that the retrieval gate
+silently swapped whenever tickets were updated; on a fixed 300-pair sample it is 0.490, and
+300-pair samples range 0.48 to 0.56. Search did not get worse; the measurement got honest.
+That makes step 2's rule (open the hand links before searching) matter more, not less.
+2.9 — open the tickets support staff linked BY HAND, before searching. `fetch_ticket`
 used to return `linked_tickets` as RFS internal row numbers that no tool could open; since
 the server change of 2026-10-22 (censof-mcp PR #44) they are ticket numbers, with
 `linked_not_in_kb` counting links to tickets outside the corpus. Step 2 now reads them first,
@@ -554,7 +559,7 @@ developer after a solved problem.
 | `extracted_ids` | RFS numbers written in the ticket's own text (*"Lanjutan daripada RFS…"*, *"diselesaikan di dalam rfs…"*) | strip the leading `RFS` first: `RFS24071041P` is fetched as `24071041P`, and the prefixed form returns `found: false`. Skip the ticket's own number |
 
 **Why first:** when 12 hand-linked pairs were read, 10 were the same issue, and similarity
-search misses about 4 in 10 of them (`linked_recall5` 0.583). A hand link is the strongest
+search misses about half of them (`linked_recall5` 0.490 on 300 pairs). A hand link is the strongest
 precedent signal the corpus has.
 
 **Still a claim, not proof.** 2 of those 12 were looser (a different symptom, or a vague

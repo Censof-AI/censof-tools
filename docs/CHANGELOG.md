@@ -20,6 +20,15 @@ The plugin can change without the skill changing, and vice versa.
 
 ## censof-mcp
 
+### 1.1.8 · rfs-analyze v2.9.1 · 22 Oct 2026
+
+**One figure corrected.** The skill (and the knowledge base's own tool description) said
+similarity search misses about 4 in 10 of the tickets support staff linked by hand. A fairer
+measurement, on a larger fixed sample, says it misses about **half**. Search did not get
+worse; the old figure came from a small sample that happened to be on the lucky side. Nothing
+else changes in how answers are written, but it is one more reason the skill opens
+hand-linked tickets before searching.
+
 ### 1.1.7 — rfs-analyze v2.9 · 22 Oct 2026
 
 **Hand-linked tickets are read first.** When support staff link tickets to each other by
