@@ -14,7 +14,7 @@ trigger: /rfs-analyze
 
 # /rfs-analyze
 
-**Version 2.8.5 — 2026-09-29.** Check this line before reporting a problem: if it is older
+**Version 2.9 — 2026-10-22.** Check this line before reporting a problem: if it is older
 than the one the OPEX team is shipping, you are on a stale copy. It ships inside the
 **censof-mcp plugin** — nothing to unzip and no old copy to remove:
 
@@ -28,10 +28,17 @@ The Update button in the app does not work — a known Claude Code bug, not a fa
 
 > **State the version out loud, every time, at the top of every answer.** Not because the
 > reader asked — because a silent version number is a version number nobody checks. Open
-> with one line: *"Running rfs-analyze v2.8.5."* A stale copy is only caught if it is said,
+> with one line: *"Running rfs-analyze v2.9."* A stale copy is only caught if it is said,
 > not left to be noticed.
 
-*2.8.5 — one correction. The recurring loan-disbursement defect was quoted as a patch
+*2.9 — open the tickets support staff linked BY HAND, before searching. `fetch_ticket`
+used to return `linked_tickets` as RFS internal row numbers that no tool could open; since
+the server change of 2026-10-22 (censof-mcp PR #44) they are ticket numbers, with
+`linked_not_in_kb` counting links to tickets outside the corpus. Step 2 now reads them first,
+plus the RFS numbers written in the ticket's own text (`extracted_ids`, prefix stripped):
+10 of 12 hand-linked pairs read were the same issue, and similarity search misses about 4 in
+10 of them. Found by asking why related-ticket recall was stuck, not by failure.
+2.8.5 — one correction. The recurring loan-disbursement defect was quoted as a patch
 "proven across 4 occurrences, 2 clients, 2021–2026". A verified precedent list, recounted
 2026-09-29 from a colleague's audit, puts it at 10 closed tickets across 3 clients,
 2022–2026, at least 15 distinct loans; the fix-label section now says so. Nothing about how
@@ -125,7 +132,7 @@ Take one RFS ticket through these steps, in order. 1b runs on live tickets only:
 | --- | --- | --- |
 | 1 | Read the ticket **and its attachments** | what was actually reported |
 | 1b | **Live tickets only** — is this a re-key of a closed one? | the legacy twin, and its whole history |
-| 2 | Find precedent | duplicate verdict + what happened last time |
+| 2 | Find precedent: **hand-linked tickets first**, then search | duplicate verdict + what happened last time |
 | 3 | Read the docs, then **cross-analyse** against precedent | candidate causes, side by side |
 | 4 | Likely cause | what to check, and where |
 | 5 | The fix | step by step, labelled proven or proposed |
@@ -535,6 +542,33 @@ for its legacy twin reached production**. Diagnosing it as a new defect would ha
 developer after a solved problem.
 
 ### 2 — Find precedent, and decide whether this is a DUPLICATE
+
+#### First, before any search: open the tickets support staff linked BY HAND
+
+`fetch_ticket` (closed tickets) returns precedent you do not have to search for:
+
+| Field | What it is | Do |
+| --- | --- | --- |
+| `linked_tickets` | ticket numbers support staff linked to this one **by hand** | `fetch_ticket` each one (up to 5) and read it like any precedent, attachments included (2b) |
+| `linked_not_in_kb` | how many links point at tickets outside the KB (still open, or not closed by the client) | they cannot be opened here; say so: *"2 linked tickets are not in the KB, probably still open"* |
+| `extracted_ids` | RFS numbers written in the ticket's own text (*"Lanjutan daripada RFS…"*, *"diselesaikan di dalam rfs…"*) | strip the leading `RFS` first: `RFS24071041P` is fetched as `24071041P`, and the prefixed form returns `found: false`. Skip the ticket's own number |
+
+**Why first:** when 12 hand-linked pairs were read, 10 were the same issue, and similarity
+search misses about 4 in 10 of them (`linked_recall5` 0.583). A hand link is the strongest
+precedent signal the corpus has.
+
+**Still a claim, not proof.** 2 of those 12 were looser (a different symptom, or a vague
+cross-client link). Check `product_family` and read the thread before calling it a duplicate.
+A ticket closed as `N01 - Duplicate RFS` that names another ticket usually means the work
+happened THERE: read that one for the fix.
+
+Mark these as *linked by hand* in the answer's precedent table, so the reader can tell them
+from search hits. Go one hop further only when a precedent's own fix is thin, then stop.
+
+`fetch_live_ticket` does not translate links. For a live ticket, the closed twin found in 1b
+carries them; otherwise rely on search.
+
+#### Then search
 
 ```
 search_similar_tickets(query=<problem in the reporter's own words>, k=5,
@@ -980,6 +1014,8 @@ Not style. Each of these has produced a wrong answer in practice.
 - [ ] A **relevance verdict** per file — including "belongs to a different ticket"
 
 **Step 2 — precedent**
+- [ ] `linked_tickets` and `extracted_ids` on the ticket **opened before searching** (or none
+      present); `linked_not_in_kb` reported when above 0
 - [ ] Searched in **both languages**, results merged and deduped
 - [ ] `list_ticket_attachments` called on **every precedent returned**
 - [ ] Attachments **read for every precedent that appears in the answer**

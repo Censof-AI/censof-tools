@@ -20,6 +20,16 @@ The plugin can change without the skill changing, and vice versa.
 
 ## censof-mcp
 
+### 1.1.7 — rfs-analyze v2.9 · 22 Oct 2026
+
+**Hand-linked tickets are read first.** When support staff link tickets to each other by
+hand, those links are now shown as ticket numbers (they used to be internal numbers nothing
+could open), and the skill opens them before it searches for similar tickets. Hand-linked
+tickets are usually the same issue, and similarity search misses about 4 in 10 of them, so
+answers on linked tickets should find the right precedent more often. Linked tickets that
+are not in the knowledge base yet (for example still open) are mentioned as such. The
+precedent table marks these as *linked by hand*.
+
 ### 1.1.6 — rfs-analyze v2.8.5 · 29 Sep 2026
 
 **One corrected figure.** When the skill explains its "proven workaround, root cause not
