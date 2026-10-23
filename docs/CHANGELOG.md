@@ -20,6 +20,16 @@ The plugin can change without the skill changing, and vice versa.
 
 ## censof-mcp
 
+### 1.1.10 · rfs-analyze v2.9.3 · 23 Oct 2026
+
+**Quicker answers for problems that keep coming back.** When a problem has happened many
+times, the answer lists the past tickets with a count (*"at least 7 tickets since 2022"*).
+Before, the skill opened the attachments of every one of them; on one recurring ticket that
+took 41 tool calls. Now it fully reads only the tickets the answer relies on (the one whose
+fix it carries, the cause it argues, any duplicate). The rest are marked *"Counted from
+search results, not opened"*, and you can ask it to open any of them. The same ticket now
+takes 10 tool calls, with the same answer.
+
 ### 1.1.9 · rfs-analyze v2.9.2 · 23 Oct 2026
 
 **A wider search before saying "not seen before", and an honest answer when it still finds

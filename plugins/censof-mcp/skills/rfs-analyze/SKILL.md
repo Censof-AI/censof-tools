@@ -14,7 +14,7 @@ trigger: /rfs-analyze
 
 # /rfs-analyze
 
-**Version 2.9.2 — 2026-10-23.** Check this line before reporting a problem: if it is older
+**Version 2.9.3 — 2026-10-23.** Check this line before reporting a problem: if it is older
 than the one the OPEX team is shipping, you are on a stale copy. It ships inside the
 **censof-mcp plugin** — nothing to unzip and no old copy to remove:
 
@@ -28,10 +28,17 @@ The Update button in the app does not work — a known Claude Code bug, not a fa
 
 > **State the version out loud, every time, at the top of every answer.** Not because the
 > reader asked — because a silent version number is a version number nobody checks. Open
-> with one line: *"Running rfs-analyze v2.9.2."* A stale copy is only caught if it is said,
+> with one line: *"Running rfs-analyze v2.9.3."* A stale copy is only caught if it is said,
 > not left to be noticed.
 
-*2.9.2: when the normal search finds nothing related, a DEEPER PASS runs before saying so:
+*2.9.3: a ticket that only adds to a recurrence count, with nothing in the answer relying
+on its fix or cause, no longer has its attachments listed and read; the answer says it was
+counted from search results and offers to open any. Found in the 2.9.2 test: on a recurring
+Deposit Refund ticket, reading every row's attachments took 41 tool calls, 25 of them reads.
+Re-run on the same ticket with this rule: 10 calls, the same precedent carried, the 6
+count-only rows marked as such. Four older lines that still said "every hit, no exception"
+now name the exemption.
+2.9.2: when the normal search finds nothing related, a DEEPER PASS runs before saying so:
 both languages again at 25 results, judged from what each hit now carries (the start of the
 description, the day it was opened, module, client), opening a ticket only when those leave
 doubt. Measured: on 300 hand-linked pairs the top 25 holds the partner 65% of the time
@@ -701,7 +708,9 @@ works in both directions.
   *"at least 6 tickets reported this"*. A claim that the same CAUSE recurred needs each
   ticket opened, because one symptom often has several causes (see the next section). A
   count that backs a **raise a product bug** decision is always opened ticket by ticket
-  (step 5, *Close with the decision*).
+  (step 5, *Close with the decision*). Rows that only add to the count need no attachment
+  reading (2b, *One exception*); say they were counted from search results and offer to
+  open any.
 * **A precedent's attachments are part of the precedent** — see 2b. Do not judge a past
   ticket from its text alone any more than you would the current one.
 
@@ -800,7 +809,8 @@ evidence you have looked at.** A past screenshot is routinely where the real err
 field values and screen state live — the resolution field says "issue resolved", the
 screenshot says what the issue WAS.
 
-**Listing is cheap. Do it on every hit you KEEP or open, without exception:**
+**Listing is cheap. Do it on every hit you rely on or open, without exception** (rows that
+only add to a count are the one exemption, below):
 
 ```
 list_ticket_attachments(referno=<every precedent you keep or open>)   # mandatory for these
@@ -813,12 +823,23 @@ ticket showing `attachment_count: 0` needs no listing either.
 
 **The rule, in one line: if a precedent appears in your synthesis, its attachments have been
 read.** Not "the strongest one". Not "the one you carry the fix from". Every precedent you
-put in front of the reader.
+put in front of the reader as evidence, except the rows that only add to a count (next
+paragraph).
+
+**One exception: a ticket that only adds to a COUNT.** When a problem keeps coming back, the
+answer shows a count, *"at least 7 tickets since 2022"*, with one row per ticket. A row whose
+fix and cause the answer does NOT rely on, judged from its search fields alone, needs neither
+listing nor reading. Say so under the table, and offer the next step: *"Counted from search
+results, not opened. Ask me to open any of them."* Everything the answer leans on (the
+precedent whose fix it carries, the cause it argues, any duplicate) is still read in full.
+Measured 2026-10-23 on a recurring Deposit Refund ticket: reading every row's attachments
+took 41 tool calls, 25 of them reads.
 
 | Precedent | List | Read |
 | --- | --- | --- |
 | A hit ruled out from its search fields alone | not needed | not needed |
-| Any hit you **mention in the synthesis** | always | **always** |
+| A row that only adds to a recurrence count, nothing relied on | not needed | not needed: **say "counted from search results, not opened"** |
+| Any hit you **mention as evidence** (its fix, cause or verdict is used) | always | **always** |
 | Duplicate verdict, or fix carried forward | always | **always — both sides compared** |
 | Hit you **opened, then discard** (wrong product, different cause), or name only as the nearest unlike case | always | not required — **name it and say why** |
 
@@ -832,7 +853,8 @@ becomes waste when they don't. If several hits share the same subject line patte
 `fix_type`, and the same one-line resolution shape, they are one finding wearing several
 referno's, not several findings:
 
-* `list_ticket_attachments` on all of them — still cheap, still mandatory, no exception.
+* `list_ticket_attachments` on all of them — still cheap, still mandatory, unless a member
+  only adds to a count (2b, *One exception*).
 * Fully read **one representative** in depth (thread + attachments) — pick the one with the
   richest `resolution_quality`/`has_thread_detail`.
 * For the rest, confirm from the metadata alone that they match the same shape, and say so as
@@ -1128,7 +1150,8 @@ Not style. Each of these has produced a wrong answer in practice.
       so, and section 2 says it honestly, with follow-ups the reader can type
 - [ ] `list_ticket_attachments` called on **every precedent kept or opened** (a hit ruled out
       from its search fields alone needs none)
-- [ ] Attachments **read for every precedent that appears in the answer**
+- [ ] Attachments **read for every precedent that appears in the answer**, except rows that
+      only add to a count, which say *"counted from search results, not opened"*
 - [ ] Discarded precedents **named**, with the reason
 - [ ] Duplicate verdict stated explicitly, or explicitly ruled out
 
