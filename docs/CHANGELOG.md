@@ -20,6 +20,29 @@ The plugin can change without the skill changing, and vice versa.
 
 ## censof-mcp
 
+### 1.1.9 · rfs-analyze v2.9.2 · 23 Oct 2026
+
+**A wider search before saying "not seen before", and an honest answer when it still finds
+nothing.** What you will notice:
+
+* **When the usual search does not find the same problem**, the skill now searches again,
+  wider (25 past tickets per language instead of 5), before answering. On a fixed test set
+  that finds the related ticket about 65% of the time, against 49% before.
+* **It is quicker and cheaper.** Each search result now shows how the past ticket starts,
+  when it was opened, the module and the client, so the skill no longer opens every ticket
+  to judge it. In testing that cut tool calls per ticket from 11-21 to 5-6.
+* **"Has this happened before" is worded honestly.** When nothing turns up it says *"We
+  didn't find a related case, even after a wider search"*, explains that search does not
+  catch every past case, and offers two or three follow-ups you can type as they stand (the
+  exact error message, the words your users use, a ticket number you remember). When it
+  finds only similar cases it says so and names the nearest one, with how it differs.
+* **Counts are written as minimums**: *"at least 6 tickets since 2023"*, because search misses
+  some related tickets, so the true number is higher.
+* **"Duplicate" now means the same incident.** The same problem at another client is called
+  a recurrence, and its fix is offered as the lead.
+
+Tested on 6 real tickets before release, then re-tested on 2 after fixes.
+
 ### 1.1.8 · rfs-analyze v2.9.1 · 22 Oct 2026
 
 **One figure corrected.** The skill (and the knowledge base's own tool description) said

@@ -14,7 +14,7 @@ trigger: /rfs-analyze
 
 # /rfs-analyze
 
-**Version 2.9.1 — 2026-10-22.** Check this line before reporting a problem: if it is older
+**Version 2.9.2 — 2026-10-23.** Check this line before reporting a problem: if it is older
 than the one the OPEX team is shipping, you are on a stale copy. It ships inside the
 **censof-mcp plugin** — nothing to unzip and no old copy to remove:
 
@@ -28,10 +28,31 @@ The Update button in the app does not work — a known Claude Code bug, not a fa
 
 > **State the version out loud, every time, at the top of every answer.** Not because the
 > reader asked — because a silent version number is a version number nobody checks. Open
-> with one line: *"Running rfs-analyze v2.9.1."* A stale copy is only caught if it is said,
+> with one line: *"Running rfs-analyze v2.9.2."* A stale copy is only caught if it is said,
 > not left to be noticed.
 
-*2.9.1: one figure corrected. Similarity search misses about HALF of the hand-linked
+*2.9.2: when the normal search finds nothing related, a DEEPER PASS runs before saying so:
+both languages again at 25 results, judged from what each hit now carries (the start of the
+description, the day it was opened, module, client), opening a ticket only when those leave
+doubt. Measured: on 300 hand-linked pairs the top 25 holds the partner 65% of the time
+against 49% for the top 5; in a blind test on 8 tickets it found every linked ticket that sat
+within the top 25, and the extra angle searches tried with it found none, so they are not
+part of it.
+Hits have carried those fields since the server change of 2026-10-22 (censof-mcp PR #56),
+which cut tool calls per ticket from 11-21 to 5-6. A "no" is now said honestly, with
+follow-ups the reader can type, and a recurrence count is written as a minimum.
+Tested on 6 tickets before release; that test changed four things. The pass runs unless a
+hit is the SAME problem (a merely similar hit had switched it off on a ticket whose real
+partner search never found). Fields decide whether a hit is related; a ticket is opened to
+settle doubt or to read the fix of a precedent you present. Attachments are listed on
+hits you keep or open, not on every hit (at k=25 that was 40 or more calls). A recurrence
+count of the symptom may be judged from search fields; the same cause, and the count behind
+"raise a product bug", still need each ticket opened. A re-test on 2 tickets then confirmed
+the trigger (the pass ran on one, rightly skipped on the other, 7 calls each) and settled
+three more points: the order of hits changes with k, so all 25 are judged again; a "same
+problem" from the fields is confirmed by opening it; and a duplicate is the same incident,
+while the same problem at another client is a recurrence.
+2.9.1: one figure corrected. Similarity search misses about HALF of the hand-linked
 tickets, not 4 in 10. The old 0.583 came from one 60-pair sample that the retrieval gate
 silently swapped whenever tickets were updated; on a fixed 300-pair sample it is 0.490, and
 300-pair samples range 0.48 to 0.56. Search did not get worse; the measurement got honest.
@@ -161,7 +182,7 @@ fix until they have decided to.
 | # | Section | Answers |
 | --- | --- | --- |
 | 1 | **What was reported** | what the user sees, in their words — plus how long it has been open |
-| 2 | **Has this happened before** | named precedent, or plainly no |
+| 2 | **Has this happened before** | named precedent, or an honest no with next steps (step 2, *When the same problem does not turn up*) |
 | 3 | **What is wrong** | the cause you landed on |
 | 4 | **What to do** | numbered actions, in order |
 | 5 | **How sure we are** | and what would settle it |
@@ -254,7 +275,8 @@ them — that is a display choice, and it is not the string you search with.
   Ready even though the money went out"*.
 * **Three to five sentences per section.** Longer means the technical half has leaked in.
 * **Plain words for how sure we are**: *"this has happened before and we know the fix"* /
-  *"we have not seen this exact problem before"*.
+  *"we didn't find a related case, even after a wider search"*. Never *"this has not
+  happened before"*: search misses about half of the tickets staff linked by hand.
 * **No hedging a non-technical reader cannot act on.** "Likely a write-back failure in the
   extension" means nothing to them. *"The payment went out but the loan was never updated to
   match"* does.
@@ -627,7 +649,7 @@ semantic 60/60 both). The corpus is simply **partitioned by language**, and your
 language silently selects which half you search.
 
 ```
-run 1: the problem in ENGLISH   (or the reporter's own words)
+run 1: the problem in ENGLISH   (the reporter's own words, if they wrote in English)
 run 2: the SAME problem in MALAY
        then merge and dedupe by referno
 ```
@@ -653,17 +675,33 @@ works in both directions.
 
 **Read the metadata on every hit before using it:**
 
+* **Decide WHETHER a hit is related from what it carries, without opening it:** `subject`,
+  `description_start` (the first 300 characters of what was reported), `created`, `module`,
+  `client_id`. Tickets opened close together for the same client are often the same
+  incident. Open a ticket (`fetch_ticket`) for two reasons only: these fields leave doubt,
+  or it is a precedent you will present and you need its fix (next bullets). Measured
+  2026-10-22 on 8 tickets, searching and judging only: the same precedents found, tool
+  calls down from 11-21 to 5-6 per ticket, ticket opens from 45 to 4 across the 8. Reading
+  the fix and the attachments of what you present (2b) comes on top.
 * **`product_family` — the one hard rule.** A GRP problem answered from a CF ticket is a
   different product with a different fix. Label a cross-product hit; never present it as
   precedent unmarked.
-* **`has_thread_detail: true` -> `fetch_ticket(referno)` and read the thread.** The fix is
+* **On a precedent you will present, `has_thread_detail: true` -> `fetch_ticket(referno)`
+  and read the thread.** Not on every hit: only the ones you keep. The fix is
   frequently in the conversation, not the resolution field: 49% of thin/empty resolutions
   still carry real diagnostic detail. Never judge a ticket from `resolution_quality` alone.
 * **`fix_documented: false` is NOT a reason to skip a ticket.** The outcome is often the
   answer, and `fix_type` says which — `U01`/`U02` "Advised User" = USER ERROR not a bug,
   `N` = no fault found, `P01` = a known gap deferred to an enhancement request.
 * **Recurrence is evidence.** The same symptom across several tickets is a finding in itself
-  — including "this keeps happening and was never properly fixed".
+  — including "this keeps happening and was never properly fixed". Write the count as a
+  minimum, *"at least 6 tickets since 2023"*: search misses about half of the related
+  tickets, so the true number is higher than the ones you found. A hit may join a count of
+  the SYMPTOM from its own fields, when its `description_start` shows it; word it that way,
+  *"at least 6 tickets reported this"*. A claim that the same CAUSE recurred needs each
+  ticket opened, because one symptom often has several causes (see the next section). A
+  count that backs a **raise a product bug** decision is always opened ticket by ticket
+  (step 5, *Close with the decision*).
 * **A precedent's attachments are part of the precedent** — see 2b. Do not judge a past
   ticket from its text alone any more than you would the current one.
 
@@ -696,6 +734,65 @@ put the effort into the same-client pass and the docs instead.
 *"this is a duplicate of <referno>"* and carry its fix forward. That verdict is usually the
 single most actionable thing this skill produces — do not leave it implied.
 
+A duplicate is the same INCIDENT: the same client, the same record or event, usually opened
+close together. The same problem at another client or on another record is a recurrence,
+not a duplicate: *"the same problem was seen before at another client (<referno>), and its
+fix is the lead"*.
+
+### When the same problem does not turn up: the deeper pass, then an honest answer
+
+Run this when the hand links (if any) and both normal searches (`k=5`, `product_family`
+set) found **no hit that is the same problem**: the same symptom in the same function,
+whatever the record or the client. A hit that is only *like* it does not switch the pass
+off: the same screen with a different complaint, the same symptom with a different cause,
+the same kind of request in another module, or a cross-product lead from the unfiltered
+pass. When the normal pass found the same problem, skip it.
+
+```
+run 3: the run-1 query again, k=25   (same product_family)
+run 4: the run-2 query again, k=25
+       the order changes with k, so judge every hit again from its fields,
+       and open only those still in doubt
+```
+
+**SAME or only LIKE: the fields propose, opening confirms.** A hit whose fields say "same
+problem" is one you will present, so you open it anyway to read its fix. If its thread
+shows a different cause, it is only LIKE this ticket; and if no SAME hit is left, run the
+pass then.
+
+**Why 25, and why only this.** Measured on 300 hand-linked pairs (2026-10-22): the linked
+ticket is in the top 5 for 49% of them, the top 25 for 65%, the top 50 for 68%. 95 of the
+153 top-5 misses are not in the top 50 at all, so widening further buys almost nothing. In a
+blind test on 8 tickets the pass found the linked ticket every time it sat within the top 25.
+The extra searches tried alongside it (screen plus module, a cause taken from the docs) found
+no linked ticket in either test, so they are not part of the pass. Filtering by module or
+client made it worse: about a quarter of linked tickets belong to another module or client.
+
+Cost: two more searches, each returning five times the hits. Worth it only when the answer
+would otherwise be "no".
+
+**If it still finds nothing, say so honestly, and hand over the next step.** Search misses
+about half of the tickets staff linked by hand, so "nothing found" is not "never happened".
+Section 2 of the answer then reads like this:
+
+> *We didn't find a related case, even after a wider search. Search does not catch every
+> past case, so this may still have happened before. To dig further, ask me to:*
+> * *search for the exact error message on screen: "..."*
+> * *search using the words your users use for it: "..."*
+> * *open a ticket number you remember*
+
+Every follow-up must add something the pass lacked; both languages and 25 hits are already
+done, so never offer "search again in Malay". Good ones bring the exact error text, a screen
+ID, the users' own name for the function, or a ticket number someone remembers. Fill the
+quoted parts from THIS ticket, so the reader can copy a follow-up as it stands. A change
+request has no error message: offer the function's name or screen instead. Never write
+*"this has not happened before"*.
+
+If the pass found only cases that are **like** it, say that, and name the nearest one or two
+with how they differ: *"We didn't find the same case. The nearest is <referno> (<year>,
+another client): <how it is alike>, but <how it differs>."* Then offer the follow-ups as
+above.
+
 ### 2b — Read the attachments on every precedent you PRESENT
 
 Same rule as step 1, applied to history: **a ticket you lean on must be a ticket whose
@@ -703,12 +800,16 @@ evidence you have looked at.** A past screenshot is routinely where the real err
 field values and screen state live — the resolution field says "issue resolved", the
 screenshot says what the issue WAS.
 
-**Listing is free. Do it on EVERY hit, without exception:**
+**Listing is cheap. Do it on every hit you KEEP or open, without exception:**
 
 ```
-list_ticket_attachments(referno=<every precedent returned>)   # free, mandatory, all of them
-read_ticket_attachment(referno=..., filename=...)             # costs context -- see rule
+list_ticket_attachments(referno=<every precedent you keep or open>)   # mandatory for these
+read_ticket_attachment(referno=..., filename=...)                     # costs context -- see rule
 ```
+
+A hit ruled out from its search fields alone needs no listing. That is most of the deeper
+pass's extra hits: listing all of them would add 40 or more calls to one ticket. An opened
+ticket showing `attachment_count: 0` needs no listing either.
 
 **The rule, in one line: if a precedent appears in your synthesis, its attachments have been
 read.** Not "the strongest one". Not "the one you carry the fix from". Every precedent you
@@ -716,10 +817,10 @@ put in front of the reader.
 
 | Precedent | List | Read |
 | --- | --- | --- |
-| Any hit returned at all | **always** | — |
+| A hit ruled out from its search fields alone | not needed | not needed |
 | Any hit you **mention in the synthesis** | always | **always** |
 | Duplicate verdict, or fix carried forward | always | **always — both sides compared** |
-| Hit you **discard** (wrong product, different symptom) | always | not required — **name it and say why** |
+| Hit you **opened, then discard** (wrong product, different cause), or name only as the nearest unlike case | always | not required — **name it and say why** |
 
 Discarding is the only exemption, and it costs you a sentence: *"26050912P — CF, different
 product, not used."* A reader can then tell a deliberate skip from an oversight. What you may
@@ -731,7 +832,7 @@ becomes waste when they don't. If several hits share the same subject line patte
 `fix_type`, and the same one-line resolution shape, they are one finding wearing several
 referno's, not several findings:
 
-* `list_ticket_attachments` on all of them — still free, still mandatory, no exception.
+* `list_ticket_attachments` on all of them — still cheap, still mandatory, no exception.
 * Fully read **one representative** in depth (thread + attachments) — pick the one with the
   richest `resolution_quality`/`has_thread_detail`.
 * For the rest, confirm from the metadata alone that they match the same shape, and say so as
@@ -939,9 +1040,10 @@ The last line names what the human should DO — not what you found:
   produces; never leave it implied
 * **escalate** — recurring defect, or the fix touches production data
 * **raise a product bug** — recurrence with no root cause on record, OR a
-  **PROVEN WORKAROUND / ROOT CAUSE NOT FIXED** situation. Say how many times and over what
-  period; that count is the argument — and **enumerate it referno by referno, every one
-  fetched in THIS run.** A count carried from memory, an earlier session or a summary field
+  **PROVEN WORKAROUND / ROOT CAUSE NOT FIXED** situation. Say how many times, as a minimum
+  (*"at least 10 tickets"*), and over what period; that count is the argument — and
+  **enumerate it referno by referno, every one fetched in THIS run.** Step 2 lets a recurrence count be judged from search fields; this
+  one, because it goes to the developers, is not. A count carried from memory, an earlier session or a summary field
   does not qualify: a figure of "4 occurrences, 2021–2026" re-checked ticket by ticket turned
   out to be 10 tickets across 3 clients from Feb 2022, wrong in both the count and the start
   year. It is the one number that carries the whole argument to the developers. This decision and "verify and close" are not
@@ -1022,7 +1124,10 @@ Not style. Each of these has produced a wrong answer in practice.
 - [ ] `linked_tickets` and `extracted_ids` on the ticket **opened before searching** (or none
       present); `linked_not_in_kb` reported when above 0
 - [ ] Searched in **both languages**, results merged and deduped
-- [ ] `list_ticket_attachments` called on **every precedent returned**
+- [ ] Nothing related found? The **deeper pass** ran (both languages, `k=25`) before saying
+      so, and section 2 says it honestly, with follow-ups the reader can type
+- [ ] `list_ticket_attachments` called on **every precedent kept or opened** (a hit ruled out
+      from its search fields alone needs none)
 - [ ] Attachments **read for every precedent that appears in the answer**
 - [ ] Discarded precedents **named**, with the reason
 - [ ] Duplicate verdict stated explicitly, or explicitly ruled out
