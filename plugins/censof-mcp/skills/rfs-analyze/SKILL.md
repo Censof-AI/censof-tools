@@ -14,7 +14,7 @@ trigger: /rfs-analyze
 
 # /rfs-analyze
 
-**Version 2.9.3 — 2026-10-23.** Check this line before reporting a problem: if it is older
+**Version 2.9.4 — 2026-10-28.** Check this line before reporting a problem: if it is older
 than the one the OPEX team is shipping, you are on a stale copy. It ships inside the
 **censof-mcp plugin** — nothing to unzip and no old copy to remove:
 
@@ -28,10 +28,17 @@ The Update button in the app does not work — a known Claude Code bug, not a fa
 
 > **State the version out loud, every time, at the top of every answer.** Not because the
 > reader asked — because a silent version number is a version number nobody checks. Open
-> with one line: *"Running rfs-analyze v2.9.3."* A stale copy is only caught if it is said,
+> with one line: *"Running rfs-analyze v2.9.4."* A stale copy is only caught if it is said,
 > not left to be noticed.
 
-*2.9.3: a ticket that only adds to a recurrence count, with nothing in the answer relying
+*2.9.4: two additions from the KB submission SOP (2026-10-27). (1) Ticket hits and fetched
+tickets now carry `outcome`, `fix_confirmed` and `ticket_kind`: among equally relevant
+precedents, lead with the confirmed fix and call it that; an unconfirmed ticket still counts.
+(2) search_docs also returns APPROVED DOCUMENTS (`source_index: approved-docs`): signed-off
+manuals, guides, BRIPs, test scripts and workbooks submitted by Heads of Department. A
+client's BRIP or workbook says what was agreed for that client; cite its title, version and
+sign-off date (step 3a).
+2.9.3: a ticket that only adds to a recurrence count, with nothing in the answer relying
 on its fix or cause, no longer has its attachments listed and read; the answer says it was
 counted from search results and offers to open any. Found in the 2.9.2 test: on a recurring
 Deposit Refund ticket, reading every row's attachments took 41 tool calls, 25 of them reads.
@@ -700,6 +707,13 @@ works in both directions.
 * **`fix_documented: false` is NOT a reason to skip a ticket.** The outcome is often the
   answer, and `fix_type` says which — `U01`/`U02` "Advised User" = USER ERROR not a bug,
   `N` = no fault found, `P01` = a known gap deferred to an enhancement request.
+* **`fix_confirmed` and `outcome` say what kind of precedent a hit is.** `fix_confirmed:
+  true` = a fix was applied, it is written down, and the client closed the ticket. When two
+  precedents are equally relevant, lead with the confirmed one and call it a *confirmed fix*.
+  `outcome` names the rest: `user_advised` (user error or information), `duplicate_or_test`,
+  `quotation`, `enhancement_requested`. `ticket_kind` is `incident` (RFS service type
+  Problem) or `service_request` (every other type). Labels, never filters: an unconfirmed
+  ticket is still precedent and still counts towards recurrence.
 * **Recurrence is evidence.** The same symptom across several tickets is a finding in itself
   — including "this keeps happening and was never properly fixed". Write the count as a
   minimum, *"at least 6 tickets since 2023"*: search misses about half of the related
@@ -909,6 +923,16 @@ Keep `k` at 10+. `acumatica-knowledge` is ~35k chunks against GRP's few hundred,
 GRP-specific answers sit mid-list and a lower `k` drops them entirely. Prefer `grp-*` indices
 for a GRP ticket, and check the citation path — `grp-sharepoint` also holds **CF Implementors
 Guides**. Follow a `related` topic_id with `fetch_topic` when a hit is on-point but truncated.
+
+**Approved documents** (`source_index: approved-docs`) are signed-off documents Heads of
+Department submitted under the KB submission SOP: user manuals and guides, BRIPs, test
+scripts, project workbooks and questionnaires. For a ticket from the same client or project,
+its BRIP or workbook says what was AGREED for that client (configuration, scope, change
+requests), which is often what decides between "bug" and "working as configured". Use it
+in 3b like any document and cite its `title`, `version` and `signoff_date`. Personal data in it
+comes back masked; read its pictures with `read_doc_image(path)` from `image_files`. Only
+current versions are searched: if you are shown one with `status: superseded`, say it is not
+the current version.
 
 **Never skip this because precedent already looked conclusive.** That is the failure mode this
 skill exists to prevent: precedent produces a plausible answer, which *feels* like done. On

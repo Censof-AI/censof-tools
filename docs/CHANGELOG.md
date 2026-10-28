@@ -20,6 +20,17 @@ The plugin can change without the skill changing, and vice versa.
 
 ## censof-mcp
 
+### 1.1.11 · rfs-analyze v2.9.4 · 28 Oct 2026
+
+**Confirmed fixes first, and signed-off project documents.** Past tickets now say how they
+ended: a fix applied, written down and accepted by the client, the user advised, or no fault
+found, and whether the ticket was an incident or a service request. Among equally relevant
+past tickets, the answer leads with the confirmed fix and says so; the others still count.
+Documentation answers can also cite **approved documents**: signed-off manuals, guides,
+BRIPs, test scripts and workbooks that Heads of Department submitted under the KB submission
+SOP, with their title, version and sign-off date. A client's BRIP or workbook says what was
+agreed for that client.
+
 ### 1.1.10 · rfs-analyze v2.9.3 · 23 Oct 2026
 
 **Quicker answers for problems that keep coming back.** When a problem has happened many
