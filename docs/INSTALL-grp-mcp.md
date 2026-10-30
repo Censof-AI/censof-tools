@@ -92,7 +92,24 @@ uv --version
 **Expect:** something like `uv 0.8.0`. If it is not found, the installer added
 `%USERPROFILE%\.local\bin` to your PATH and the open window has not picked it up.
 
-You do **not** need Python. `uv` brings its own.
+You do **not** need Python. `uv` brings its own, **unless Smart App Control is on.**
+Look in Windows Security → App & browser control → Smart App Control. If it says
+**On** or **Evaluation**, Windows blocks the Python that `uv` downloads, because
+that copy is not signed. *Evaluation* can switch itself to *On* later, so treat it
+as On. Install the signed Python from python.org and tell `uv` to use only that:
+
+```powershell
+winget install Python.Python.3.13
+```
+
+```powershell
+[Environment]::SetEnvironmentVariable('UV_PYTHON_PREFERENCE','only-system','User')
+```
+
+Then close and reopen PowerShell. Do not turn Smart App Control off to get round
+this: Windows cannot turn it back on without a reinstall.
+[TROUBLESHOOTING.md](TROUBLESHOOTING.md) has the fix for a PC where the plugin is
+already installed.
 
 > **Why this step exists now.** Up to 0.81.0-rc14 the plugin carried a 23 MB
 > `grp-mcp.exe` and there was nothing to install. That binary was built without

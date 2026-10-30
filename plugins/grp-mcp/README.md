@@ -27,7 +27,10 @@ the installer adds `%USERPROFILE%\.local\bin` to PATH and open windows do not
 pick that up. Claude itself does: it passes your user PATH through to the
 plugin, verified on a running server.
 
-You do not need Python. `uv` fetches its own.
+You do not need Python. `uv` fetches its own, unless Windows Smart App Control is
+on, which blocks that copy because it is not signed. Then install Python from
+python.org and set `UV_PYTHON_PREFERENCE=only-system`; `docs/TROUBLESHOOTING.md`
+has the steps.
 
 > **This changed in rc15.** Until then this plugin carried a 23 MB
 > `server/grp-mcp.exe` and needed no prerequisite. That binary was built with

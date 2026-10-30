@@ -152,6 +152,55 @@ minutes before `uvx` still refused to see it, and `--refresh` fixed it instantly
 Anyone who has used `uvx` recently is the most likely to hit this, because their
 cache is the freshest.
 
+### The connection closes and Windows has blocked `python.exe`: Smart App Control
+
+**Windows only.** grp-mcp worked, then every start fails with Claude reporting the
+connection closed, although nothing in grp-mcp changed. In Event Viewer, under
+Applications and Services Logs → Microsoft → Windows → CodeIntegrity →
+Operational, there is an event 3033 or 3077 for a `python.exe` under
+`uv\cache\archive-v0\...\Scripts\`, which "did not meet the Enterprise signing
+level requirements".
+
+The cause is Smart App Control, which runs only signed or well-known programs. The
+server runs on a Python that `uv` downloaded itself, and that copy is not signed.
+A PC whose Smart App Control was in *Evaluation* can switch itself to *On*, which
+is how it works one day and not the next. The Python from python.org is signed, and
+Smart App Control accepts it. To confirm, run:
+
+```powershell
+uv python list --only-installed
+```
+
+Paths under `AppData\Roaming\uv\python` are `uv`'s own downloads.
+
+The fix, which worked on 30 Oct 2026 with 0.81.0:
+
+1. Install the signed Python:
+   ```powershell
+   winget install Python.Python.3.13
+   ```
+2. Tell `uv` to use only installed Pythons, never its own downloads:
+   ```powershell
+   [Environment]::SetEnvironmentVariable('UV_PYTHON_PREFERENCE','only-system','User')
+   ```
+3. Open a **new** PowerShell window and rebuild the server on the signed Python:
+   ```powershell
+   $w = 'grp-mcp-plugin @ https://github.com/Censof-AI/censof-tools/releases/download/grp-mcp-v0.81.0/grp_mcp_plugin-0.81.0-py3-none-any.whl'
+   ```
+   ```powershell
+   uvx --reinstall --from $w python -c "import grp_mcp.server, grp_mcp; print('ok', grp_mcp.__version__)"
+   ```
+   **Expect:** `ok 0.81.0`. For another version, copy the `grp-mcp-plugin @ ...`
+   text from the plugin's `.mcp.json`. If you pass these lines on through Teams or
+   another chat app, check that the quote after `.whl` survived: chat apps turn
+   it into `%22`, and PowerShell then waits at `>>` for a quote that never comes.
+4. Quit Claude completely and reopen it. If the tools are still missing, see
+   *A restart does not always retry* above.
+
+Do not turn Smart App Control off: Windows cannot turn it back on without a
+reinstall. The small `grp-mcp.exe` that `uv` creates to start the server is
+unsigned too, but it was not blocked on the PC where this was fixed.
+
 ### The first tool call takes about five seconds
 
 Expected. The server is a single self-contained executable and unpacks itself to

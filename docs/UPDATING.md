@@ -61,7 +61,8 @@ that has already happened to you, it is not a broken install — install `uv`,
 restart Claude, and everything comes back. Your connection settings are
 untouched throughout.
 
-You do **not** need Python. `uv` brings its own. The knowledge-base plugin
+You do **not** need Python. `uv` brings its own, unless Windows Smart App Control
+is on: see [TROUBLESHOOTING.md](TROUBLESHOOTING.md). The knowledge-base plugin
 (`censof-mcp`) does not need `uv` at all — it calls a hosted service.
 
 **Wondering what you just installed?** [CHANGELOG.md](CHANGELOG.md) lists every

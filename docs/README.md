@@ -70,7 +70,8 @@ out — but it is why you will see two names for one secret.
   access to request.
 - **[`uv`](https://docs.astral.sh/uv/)** for `grp-mcp` — `winget install
   astral-sh.uv` on Windows, `brew install uv` on a Mac. It fetches and runs the
-  Acumatica server in its own isolated environment; you do not need Python.
+  Acumatica server in its own isolated environment; you do not need Python,
+  unless Windows Smart App Control is on ([INSTALL-grp-mcp.md](INSTALL-grp-mcp.md), Step 1).
   `censof-mcp` needs none of this — it calls a hosted service and runs anywhere
   Claude Code does.
 - **On macOS, install from the CLI.** The app's **Add marketplace** button
