@@ -166,6 +166,29 @@ skill.
 
 ## grp-mcp
 
+### Both Acumatica plugins at 0.81.2 - 2 Nov 2026
+
+**A statement on any cash account now opens.** 0.81.1's tick only reached a statement on the
+page's default bank account. On any other account the page ignored the cash account however it
+was entered, and the tool stopped rather than touch the wrong statement. It now opens the
+statement you named, and still refuses one that does not exist. Opening is proven on build 24.111.
+A saved tick and untick after opening this way are proven on 2026R1 but not yet on 24.111, so
+start with one row on a statement that is on hold.
+
+**`whoami` no longer blames the tenant when the tenant is right.** A site that does not serve
+DAC-based OData answers 401, which the plugin read as a wrong tenant. `whoami` and
+`test_connection` now check `/odata/<tenant>` as well, and on such a site say `tenant_ok: true`
+and `dac_odata: false`. `run_dac_odata` and the tools built on it still cannot work there. Use
+`screen_get` to read.
+
+**The classic page tools no longer need OData to find their page.** On a site like that they
+failed with the same 401 before opening anything, unless you passed `page_url`. They now work out
+the address themselves.
+
+**Two corrections to the 0.81.1 notes.** The dialog's box was not what stopped a statement
+opening: the commands in the wrong case were. That box was still a real bug, and the fix stands.
+And "you can tick one row" held only for a statement on the default account, until this release.
+
 ### Both Acumatica plugins at 0.81.1 - 2 Nov 2026
 
 **You can tick one row on Reconciliation Statements.** On a site without the modern screens, the

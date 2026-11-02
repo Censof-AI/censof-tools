@@ -71,7 +71,7 @@ The server reads its instances from `connections.json`. Create it with the same
 config page Windows users get:
 
 ```bash
-uvx --from "grp-mcp-plugin @ https://github.com/Censof-AI/censof-tools/releases/download/grp-mcp-v0.81.1/grp_mcp_plugin-0.81.1-py3-none-any.whl" grp-mcp-setup
+uvx --from "grp-mcp-plugin @ https://github.com/Censof-AI/censof-tools/releases/download/grp-mcp-v0.81.2/grp_mcp_plugin-0.81.2-py3-none-any.whl" grp-mcp-setup
 ```
 
 A browser tab opens on `http://127.0.0.1:8765`. Add your instance, click **Save
