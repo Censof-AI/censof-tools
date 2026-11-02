@@ -14,7 +14,7 @@ trigger: /rfs-analyze
 
 # /rfs-analyze
 
-**Version 2.9.4 — 2026-10-28.** Check this line before reporting a problem: if it is older
+**Version 2.10.0 — 2026-11-02.** Check this line before reporting a problem: if it is older
 than the one the OPEX team is shipping, you are on a stale copy. It ships inside the
 **censof-mcp plugin** — nothing to unzip and no old copy to remove:
 
@@ -28,10 +28,20 @@ The Update button in the app does not work — a known Claude Code bug, not a fa
 
 > **State the version out loud, every time, at the top of every answer.** Not because the
 > reader asked — because a silent version number is a version number nobody checks. Open
-> with one line: *"Running rfs-analyze v2.9.4."* A stale copy is only caught if it is said,
+> with one line: *"Running rfs-analyze v2.10.0."* A stale copy is only caught if it is said,
 > not left to be noticed.
 
-*2.9.4: two additions from the KB submission SOP (2026-10-27). (1) Ticket hits and fetched
+*2.10.0: every answer now ends in a solution. Section 4 was "what to do": two or three
+sentences, with the steps held back for the technical detail, and nothing required choosing
+between causes. A real answer on a requisition that skipped approvers (2026-11-02) traced the
+problem to three setup causes, each backed by tickets and the manual, then told the reader to
+check all three: the analysis was done and the reader was left to finish it. Section 4 is now
+"The solution": one path led by the strongest cause, the exact change, how to tell it worked,
+what to try next. The labels are unchanged, so a proposed fix still says it is proposed.
+Section 5, "How sure we are", left the answer at the same time, at the owner's request:
+engineers read this to solve the issue. How strong a fix is now sits on the fix itself, and the
+claim-by-claim table comes with the technical detail.
+2.9.4: two additions from the KB submission SOP (2026-10-27). (1) Ticket hits and fetched
 tickets now carry `outcome`, `fix_confirmed` and `ticket_kind`: among equally relevant
 precedents, lead with the confirmed fix and call it that; an unconfirmed ticket still counts.
 (2) search_docs also returns APPROVED DOCUMENTS (`source_index: approved-docs`): signed-off
@@ -184,7 +194,7 @@ the point of the whole skill.
 
 **Work in tables.** Prose hides gaps; a table with an empty cell shows them.
 
-## The answer: five plain sections, technical detail on request
+## The answer: four plain sections, technical detail on request
 
 **Write the whole answer in plain language, and stop.** The technical hand-over — tables,
 field names, SQL, DAC and extension names — is NOT written unless the reader asks for it.
@@ -198,8 +208,11 @@ fix until they have decided to.
 | 1 | **What was reported** | what the user sees, in their words — plus how long it has been open |
 | 2 | **Has this happened before** | named precedent, or an honest no with next steps (step 2, *When the same problem does not turn up*) |
 | 3 | **What is wrong** | the cause you landed on |
-| 4 | **What to do** | numbered actions, in order |
-| 5 | **How sure we are** | and what would settle it |
+| 4 | **The solution** | the fix as numbered steps to carry out now, strongest cause first (step 5) |
+
+**There is no "how sure" section.** Engineers read this to solve the issue, so how strong a fix
+is sits where they act on it: its label, and a few words on the fix itself (step 5). The
+claim-by-claim table, with what would settle each claim, comes with the technical detail.
 
 Close with one line, always:
 
@@ -246,12 +259,12 @@ tickets described in a run-on paragraph is the worst case, and it was the common
 | the facts of the report — account, statement, amounts, documents | **table** |
 | process state — priority, age, SLA, who it is assigned to | **table** |
 | an occurrence count backing a product-bug argument | **table**, one row per referno |
-| per-claim confidence | **table** — claim, how sure, what it rests on |
+| per-claim confidence, in the technical detail only | **table** — claim, how sure, what it rests on |
 | the CAUSE — why this happened | **prose.** It is an argument, not a list |
 | the ACTIONS — what to do, in order | **numbered list.** Steps carry conditionals; a table breaks the flow |
 | a judgement — an attachment that does not belong, a generic symptom, an honest fix label | **prose.** A table flattens reasoning into assertion |
 
-A recurrence table in section 5 and a precedent table in section 2 hold the same tickets. Do
+A recurrence table in section 4 and a precedent table in section 2 hold the same tickets. Do
 not write both — put the enumeration where the argument needs it and reference it from the
 other.
 
@@ -287,8 +300,9 @@ them — that is a display choice, and it is not the string you search with.
 
 * **Say what the USER sees**, not what the system does internally: *"the loan still shows
   Ready even though the money went out"*.
-* **Three to five sentences per section.** Longer means the technical half has leaked in.
-* **Plain words for how sure we are**: *"this has happened before and we know the fix"* /
+* **Three to five sentences per section**, except section 4, which is as long as the steps
+  need. Longer elsewhere means the technical half has leaked in.
+* **Plain words wherever certainty comes up**: *"this has happened before and we know the fix"* /
   *"we didn't find a related case, even after a wider search"*. Never *"this has not
   happened before"*: search misses about half of the tickets staff linked by hand.
 * **No hedging a non-technical reader cannot act on.** "Likely a write-back failure in the
@@ -1015,25 +1029,66 @@ like a fact.
 
 ### 5 — The fix, step by step
 
-#### Section 4 of the answer — what to do, in plain terms
+#### Section 4 of the answer: the solution
 
-Two or three sentences: **what will be done, and whether it is a known fix or a best effort.**
-No SQL, no table names.
+**Every answer gives a solution the reader can carry out now, worked out from the analysis
+above it.** Not a list of things to look into. The reasoning is the hard part and you have
+done it by this point. Finish it: the person asking wants to know what to change.
 
-> *Example, known fix.* "We can correct this directly: the loan record needs to be brought
-> back in line with the payment that already went out. The same correction was applied to
-> another loan for this client last week and it worked. It has to be done by someone with
-> database access, and it changes live data, so it needs sign-off first."
+**Lead with one path.** Rank the causes from section 3 by their evidence and write the
+strongest first. Up to three, each with the same three parts:
 
-> *Example, best effort.* "We have not found a recorded fix for this exact problem. Based on
-> what the past tickets and the manuals show, the most likely correction is X — but it has
-> not been done before, so it should be tried on a test system first."
+| Part | What it says |
+| --- | --- |
+| **The fix** | the exact change: which screen, which record or field, what it becomes |
+| **How to tell it worked** | one result the reader can see |
+| **If it did not** | go to the next cause, or who to take it to with what |
+
+**Rules for the steps:**
+
+* **Every step is an action, and every check has an outcome.** "Compare the Approvals tab with
+  the route" is not a step. "Open the Approvals tab. If level 2 is missing, do this; if it is
+  there, go to the next fix" is. Never end a step on check, review, investigate or confirm.
+* **Use what already worked.** Where a precedent recorded a fix, lift its steps and say whose
+  they were. A fix that worked at another client is the base of the solution, not a footnote.
+* **Solve the real problem, not only the ticket in front of you.** If the ticket is a test, a
+  duplicate or a re-key and the analysis found a real ticket behind it, the solution covers
+  that one too. "Close this" alone is a verdict, not a solution.
+* **A missing record changes the first step, not the answer.** If choosing the fix needs a
+  record you cannot see, step 1 says what to get and from whom, and the next steps say what to
+  do for each result it could show. Never "get this, then we will see".
+* **Escalating goes with a solution, never instead of one.** If the fix is a code change or
+  sits with another system, say exactly what must change there, and what users do meanwhile.
+* **The honesty rules do not move.** Label it PROPOSED where it is. Changes to production go
+  through a test company or sign-off. Say how strong each fix is in a few words on the fix
+  itself ("the strongest", "untested, from the purchase order guide only"), and mark an
+  inference where it is made: an engineer acts on the step in front of them, so a warning
+  anywhere else is a warning they miss. Uncertainty is not a reason to hold the solution back,
+  and a solution is not a reason to overstate it.
+* **Identifiers stay confirmed.** A screen not confirmed in this run is written by name alone.
+  A value you did not see is described, never invented. No SQL or table names: if a script
+  exists, say so and offer it.
+
+> *Example, known fix.* "**PROVEN FIX**, recorded in `<referno>`. The loan's record needs
+> bringing back in line with the payment that already went out. 1. Open Loan Register (LM501000)
+> and find loan L26000144. 2. Confirm its payment shows as released. 3. Ask someone with
+> database access to apply the correction from `<referno>`, which changes live data, so get
+> sign-off first; ask me for the script. 4. It worked if the loan now reads In Progress."
+
+> *Example, nothing recorded for this client.* "**PROPOSED FIX**, worked out from `<referno>`,
+> `<referno>` and the Approval Maps documentation. Try it on a test company first.
+> **Fix 1, the strongest: a map rule that never fires, so a level is skipped.** 1. Open Approval
+> Maps (EP205015) and find the map this client's requisitions use. 2. Find the skipped level
+> and reselect its rule value from the list rather than typing it. 3. On one affected
+> requisition, use Hold, then Remove Hold, so the route rebuilds. 4. It worked if that level now
+> shows as pending, in order. If it does not, go to fix 2."
 
 #### The technical hand-over for step 5 — ON REQUEST ONLY
 
-**Do not write this unless the reader asks.** But the *label* below belongs in the plain
-answer too — whether a fix is proven or a guess is not a technical detail, it is the single
-most important thing the reader needs.
+**Do not write this unless the reader asks.** The plain answer already carries the steps;
+this adds what is needed to WRITE the fix: table names, scripts, SQL. The *label* below belongs
+in the plain answer too — whether a fix is proven or a guess is not a technical detail, it is
+the single most important thing the reader needs.
 
 **Always give one.** But say plainly which kind it is — this is the difference between a fix
 someone can apply and a guess someone will trust by mistake.
@@ -1079,8 +1134,10 @@ happy path strands the reader at exactly the point they needed help.
 
 #### Close with the decision
 
-The last line names what the human should DO — not what you found:
+The last line names what the human should DO — not what you found. It comes after the
+solution and points to it, never in place of it:
 
+* **apply the fix** — the solution above is ready to carry out; say who should do it
 * **verify and close** — the fix is proven and low risk
 * **close as duplicate of `<referno>`** — the strongest, most actionable verdict this skill
   produces; never leave it implied
@@ -1187,13 +1244,14 @@ Not style. Each of these has produced a wrong answer in practice.
 - [ ] Any **conflict** between precedent and docs called out, not smoothed over
 - [ ] Confidence given **per row**
 
-**The answer — five plain sections**
-- [ ] All five written, in order: reported / seen before / what is wrong / what to do / how sure
+**The answer — four plain sections**
+- [ ] All four written, in order: reported / seen before / what is wrong / the solution, and no
+      "how sure" section
 - [ ] Says what the USER sees, not what the system does internally
 - [ ] **Every section with 3+ parallel items is a TABLE** — precedent, occurrence counts,
-      report facts, process state, per-claim confidence
+      report facts, process state
 - [ ] Cause and judgement calls left as prose; actions left as a numbered list
-- [ ] The same tickets are not enumerated twice, once in section 2 and again in section 5
+- [ ] The same tickets are not enumerated twice, once in section 2 and again in section 4
 - [ ] **No self-correction visible in the text** — a fixed referno reads as if it was always
       right; only a genuinely unconfirmed claim is flagged as such
 - [ ] **Every screen ID and record number was confirmed from a tool result in THIS run** —
@@ -1206,15 +1264,22 @@ Not style. Each of these has produced a wrong answer in practice.
 - [ ] A PROPOSED fix names the evidence it was worked out from
 - [ ] A PROVEN WORKAROUND is paired with "raise a product bug", not left as "verify and close"
       alone
-- [ ] Actions numbered, one each, in the order they must happen
-- [ ] Closes with the decision: verify / close as duplicate / escalate / raise a product bug /
-      fix deployed, verification outstanding / refer to the external system owner
+- [ ] **Section 4 is a solution:** the strongest cause first, each with the exact change, how to
+      tell it worked, and what to do if it did not
+- [ ] Steps numbered, one action each, in order; no step ends on check, review, investigate or
+      confirm; every check says what to do for each result
+- [ ] If the analysis found a real ticket behind this one, the solution covers it
+- [ ] Each fix says how strong it is, in a few words on the fix; a weak or inferred step says so
+      at the step
+- [ ] Closes with the decision: apply the fix / verify / close as duplicate / escalate / raise a
+      product bug / fix deployed, verification outstanding / refer to the external system owner
 - [ ] **Ends with the offer of the technical detail — and then STOPS**
 
 **The technical hand-over — only if it was asked for**
 - [ ] Laid out as the six steps, numbered 1–6, so any claim traces back to the work
 - [ ] Cause references its row number from 3b
 - [ ] Checks are concrete — screen, field, expected value, what wrong looks like
+- [ ] Per-claim confidence table: claim, how sure, what it rests on, what would settle it
 
 **Step 6 — reverify**
 - [ ] Every quoted excerpt, code name, SQL script, screen ID, and figure traced to a specific

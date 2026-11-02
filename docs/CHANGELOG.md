@@ -20,6 +20,16 @@ The plugin can change without the skill changing, and vice versa.
 
 ## censof-mcp
 
+### 1.1.12 · rfs-analyze v2.10.0 · 2 Nov 2026
+
+**Answers now end in a solution.** The last section used to say what to look into. It now gives
+numbered steps to carry out: the most likely cause first, the exact change, how to tell it
+worked, and what to try next if it did not. Every check says what to do with its result. If the
+ticket is a test or a duplicate and a real ticket sits behind it, the solution covers that one
+too. **How sure we are** is gone from the answer: each fix says how strong it is on the fix
+itself, and the **PROVEN** and **PROPOSED** labels stay, so a proposed fix still needs trying on
+a test company first. Ask for the technical detail to see how sure it is of each claim.
+
 ### 1.1.11 · rfs-analyze v2.9.4 · 28 Oct 2026
 
 **Confirmed fixes first, and signed-off project documents.** Past tickets now say how they
