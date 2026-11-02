@@ -166,6 +166,30 @@ skill.
 
 ## grp-mcp
 
+### Both Acumatica plugins at 0.81.1 - 2 Nov 2026
+
+**You can tick one row on Reconciliation Statements.** On a site without the modern screens, the
+usual grid tools cannot reach the Reconciled and Cleared boxes on CA302000, so Claude could tell
+you to do them by hand. `aspx_grid_batch` works from the classic page instead, but it could not
+open a statement: it sent commands in a case that page ignores, with no error, and typed the cash
+account into a dialog's box of the same name. Both now come from the page itself, for every
+classic page tool. Ticking and unticking one row is proven on 2026R1, read back from the database
+each time. It has not yet been tried on an older site, so start with one row on a statement that
+is on hold.
+
+Ticking Reconciled also sets Cleared and the Clear Date. To undo a tick, send Reconciled and
+Cleared back together.
+
+**A warning on a grid no longer reads as a failed save.** A grid can carry a warning that has
+nothing to do with your change, such as "Unreleased document cannot be added to Reconciliation."
+on two other rows. The plugin read that as an error, so a row that had saved was reported as not
+saved (`possibly_saved: false`), and could have been done twice. Warnings now come back in
+`rows_warning_text`, and the save is checked and reported as usual. Real errors still fail it.
+
+**A blank record no longer counts as the right one.** A classic page can answer with an empty
+record before anything is chosen. That now counts as nothing loaded, so a write cannot go ahead
+on it.
+
 ### Both Acumatica plugins at 0.81.0 - 22 Oct 2026
 
 **The first version without "rc".** Installing and updating work as before. The fixes below
