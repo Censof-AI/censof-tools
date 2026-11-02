@@ -171,9 +171,9 @@ skill.
 **A statement on any cash account now opens.** 0.81.1's tick only reached a statement on the
 page's default bank account. On any other account the page ignored the cash account however it
 was entered, and the tool stopped rather than touch the wrong statement. It now opens the
-statement you named, and still refuses one that does not exist. Opening is proven on build 24.111.
-A saved tick and untick after opening this way are proven on 2026R1 but not yet on 24.111, so
-start with one row on a statement that is on hold.
+statement you named, and still refuses one that does not exist. Opening, a saved tick and an untick
+are all proven on build 24.111 and on 2026R1, one row at a time. Several rows in one call have not
+been tried yet.
 
 **`whoami` no longer blames the tenant when the tenant is right.** A site that does not serve
 DAC-based OData answers 401, which the plugin read as a wrong tenant. `whoami` and
