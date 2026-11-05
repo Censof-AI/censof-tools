@@ -166,6 +166,19 @@ skill.
 
 ## grp-mcp
 
+### Both Acumatica plugins at 0.81.3 - 5 Nov 2026
+
+**Notes only. Nothing the plugin does has changed.** Its notes now set out how to tick and untick a
+row on Reconciliation Statements (CA302000) from start to finish, in `KNOWLEDGE.md` section 51: the
+call, what happens inside it, what Acumatica does to the row and the statement, how to read the
+result, and what has not been tried. The check the plugin makes before a write on that screen now
+cites that section first, and `aspx_grid_batch`'s description names both builds and the section.
+0.81.2's copy of the notes still called the tick on build 24.111 unproven.
+
+**What is proven:** a tick and an untick, one row at a time, on build 24.111 and on 2026R1, on
+statements on hold. Not tried yet: several rows in one call, a row whose document is not released,
+and a released statement.
+
 ### Both Acumatica plugins at 0.81.2 - 2 Nov 2026
 
 **A statement on any cash account now opens.** 0.81.1's tick only reached a statement on the

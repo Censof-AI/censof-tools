@@ -1,7 +1,7 @@
 {
   "name": "grp-mcp-mac",
-  "description": "Superseded by the grp-mcp plugin, which is cross-platform as of 0.81.0-rc15 and identical to this one; this stays published so existing macOS and Linux installs keep updating. It existed because grp-mcp used to bundle a Windows .exe that a Mac could not execute; both now run the same code through uvx, so the split has no purpose left. Install ONE of the two, never both - they register the same server name. Needs uv: 'brew install uv'. Run the grp-mcp-setup command in this plugin's README once to create your connections file; the server then finds it with no environment variable set. LATEST (0.81.2): identical to grp-mcp. A statement on any cash account opens on Reconciliation Statements, whoami no longer blames the tenant on a site without DAC-based OData, and the classic page tools no longer need OData to find their page. Full history in docs/CHANGELOG.md.",
-  "version": "0.81.2",
+  "description": "Superseded by the grp-mcp plugin, which is cross-platform as of 0.81.0-rc15 and identical to this one; this stays published so existing macOS and Linux installs keep updating. It existed because grp-mcp used to bundle a Windows .exe that a Mac could not execute; both now run the same code through uvx, so the split has no purpose left. Install ONE of the two, never both - they register the same server name. Needs uv: 'brew install uv'. Run the grp-mcp-setup command in this plugin's README once to create your connections file; the server then finds it with no environment variable set. LATEST (0.81.3): identical to grp-mcp. Notes only, no change in behaviour: how to tick and untick a row on Reconciliation Statements is set out from start to finish, proven on build 24.111 and 2026R1, one row at a time. Full history in docs/CHANGELOG.md.",
+  "version": "0.81.3",
   "author": {
     "name": "Censof OPEX",
     "email": "arvindh@censof.com"
