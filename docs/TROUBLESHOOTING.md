@@ -88,10 +88,10 @@ update to rc40 or later, run the plugin's own command by hand to see the real
 error, which Claude does not show you:
 
 ```powershell
-uvx --from "grp-mcp-plugin @ https://github.com/Censof-AI/censof-tools/releases/download/grp-mcp-v0.81.3/grp_mcp_plugin-0.81.3-py3-none-any.whl" grp-mcp
+uvx --from "grp-mcp-plugin @ https://github.com/Censof-AI/censof-tools/releases/download/grp-mcp-v0.81.4/grp_mcp_plugin-0.81.4-py3-none-any.whl" grp-mcp
 ```
 
-That is 0.81.3's line. For another version, copy the `grp-mcp-plugin @ ...` line
+That is 0.81.4's line. For another version, copy the `grp-mcp-plugin @ ...` line
 out of the plugin's `.mcp.json`. The first start after an update downloads that
 file from GitHub and the libraries the server uses from PyPI, so both have to be
 reachable from your PC. *A restart does not always retry*, further down, applies
@@ -185,12 +185,12 @@ The fix, which worked on 30 Oct 2026 with 0.81.0:
    ```
 3. Open a **new** PowerShell window and rebuild the server on the signed Python:
    ```powershell
-   $w = 'grp-mcp-plugin @ https://github.com/Censof-AI/censof-tools/releases/download/grp-mcp-v0.81.3/grp_mcp_plugin-0.81.3-py3-none-any.whl'
+   $w = 'grp-mcp-plugin @ https://github.com/Censof-AI/censof-tools/releases/download/grp-mcp-v0.81.4/grp_mcp_plugin-0.81.4-py3-none-any.whl'
    ```
    ```powershell
    uvx --reinstall --from $w python -c "import grp_mcp.server, grp_mcp; print('ok', grp_mcp.__version__)"
    ```
-   **Expect:** `ok 0.81.3`. For another version, copy the `grp-mcp-plugin @ ...`
+   **Expect:** `ok 0.81.4`. For another version, copy the `grp-mcp-plugin @ ...`
    text from the plugin's `.mcp.json`. If you pass these lines on through Teams or
    another chat app, check that the quote after `.whl` survived: chat apps turn
    it into `%22`, and PowerShell then waits at `>>` for a quote that never comes.

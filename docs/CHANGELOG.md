@@ -166,6 +166,21 @@ skill.
 
 ## grp-mcp
 
+### Both Acumatica plugins at 0.81.4 - 5 Nov 2026
+
+**A whole statement can be ticked in one call.** Nothing the plugin does has changed: `aspx_grid_batch`
+always took a list of rows and saved them together. What is new is the proof. On Reconciliation
+Statements (CA302000) on 2026R1, 23 rows were ticked in one call and unticked in another, every one
+verified, with the statement's totals moving by exactly their sum and back. Each call took about as
+long as a single row. Send one `update` per row; `KNOWLEDGE.md` section 52 has the measurements and
+section 51 the whole route, now with a several-row call.
+
+**On build 24.111, one row per call is proven, and a batch is expected to work.** The one batch tried
+there was refused, because a person was saving the same statement at the time. Nothing was written.
+"Another process has updated the 'CARecon' record" means exactly that: run the call again when nobody
+is saving that statement. Such a refusal also says `committed: true`. Read `possibly_saved` and
+`verification` instead.
+
 ### Both Acumatica plugins at 0.81.3 - 5 Nov 2026
 
 **Notes only. Nothing the plugin does has changed.** Its notes now set out how to tick and untick a
