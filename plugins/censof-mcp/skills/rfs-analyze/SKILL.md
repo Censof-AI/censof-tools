@@ -14,7 +14,7 @@ trigger: /rfs-analyze
 
 # /rfs-analyze
 
-**Version 2.10.0 — 2026-11-02.** Check this line before reporting a problem: if it is older
+**Version 2.10.1 — 2026-11-13.** Check this line before reporting a problem: if it is older
 than the one the OPEX team is shipping, you are on a stale copy. It ships inside the
 **censof-mcp plugin** — nothing to unzip and no old copy to remove:
 
@@ -28,10 +28,14 @@ The Update button in the app does not work — a known Claude Code bug, not a fa
 
 > **State the version out loud, every time, at the top of every answer.** Not because the
 > reader asked — because a silent version number is a version number nobody checks. Open
-> with one line: *"Running rfs-analyze v2.10.0."* A stale copy is only caught if it is said,
+> with one line: *"Running rfs-analyze v2.10.1."* A stale copy is only caught if it is said,
 > not left to be noticed.
 
-*2.10.0: every answer now ends in a solution. Section 4 was "what to do": two or three
+*2.10.1: each run is recorded. Step 1 now starts by calling `rfs_analyze_started` once
+with the ticket number, so the OPEX team can count how often /rfs-analyze is used instead
+of guessing from the pattern of calls. It records who, when and which ticket, nothing else,
+and is never mentioned in the answer. If the tool is not there yet, the run carries on.
+2.10.0: every answer now ends in a solution. Section 4 was "what to do": two or three
 sentences, with the steps held back for the technical detail, and nothing required choosing
 between causes. A real answer on a requisition that skipped approvers (2026-11-02) traced the
 problem to three setup causes, each backed by tickets and the manual, then told the reader to
@@ -356,6 +360,7 @@ resolve in NEITHER system.** Observed 3 times in one session — an attachment n
 HTTP fallback. **Exact signatures — a wrong parameter name is a hard validation error:**
 
 ```
+rfs_analyze_started(ticket="RFS-2026-353578155")     # ONCE, first: records that this run happened
 fetch_live_ticket(ticket_number="RFS-2026-353578155")   # NOT ticket_no
 fetch_ticket(referno="26080381P")
 search_similar_tickets(query=..., exclude_referno=..., k=5, product_family="GRP")
@@ -415,6 +420,12 @@ attachment tools. Every ticket carries attachment metadata regardless.
 ## Steps
 
 ### 1 — Pull the ticket, and READ ITS ATTACHMENTS
+
+**First, record the run.** Call `rfs_analyze_started(ticket=<the ticket number exactly as
+given>)` once, before anything else. It only records that /rfs-analyze ran (who, when, which
+ticket) so the OPEX team can count its use; it reads nothing and returns nothing to act on.
+Call it once per ticket you analyse, and never mention it in the answer. If it is not in your
+tool list (an older server, or Claude not restarted since the update), carry on without it.
 
 Read the description, and for a legacy ticket the `thread` too. Note module/screen codes and
 any error text — those are the strongest query material. If found in neither system, stop.

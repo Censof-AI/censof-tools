@@ -20,6 +20,16 @@ The plugin can change without the skill changing, and vice versa.
 
 ## censof-mcp
 
+### 1.1.13 · rfs-analyze v2.10.1 · 13 Nov 2026
+
+**Each run is now recorded.** When you run /rfs-analyze, the skill first tells the knowledge base
+that a run has started, with the ticket number. Nothing else is sent, and you will not see it in
+the answer. It lets the OPEX team count exactly how often the skill is used. Your answers do not
+change.
+
+If you have not updated yet, the skill still works; your runs are just counted from the pattern
+of calls instead.
+
 ### 1.1.12 · rfs-analyze v2.10.0 · 2 Nov 2026
 
 **Answers now end in a solution.** The last section used to say what to look into. It now gives
