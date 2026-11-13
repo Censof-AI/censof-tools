@@ -131,6 +131,36 @@ order.
 
 ---
 
+## If the first command says the folder "is in use"
+
+`claude plugin marketplace update` swaps its copy of the marketplace for a fresh
+one. While the Claude app is open, Windows can refuse the swap:
+
+```
+Could not replace the marketplace directory ... because it is in use
+EPERM: operation not permitted, rename '...\censof-tools' -> '...\censof-tools.bak'
+```
+
+Nothing was changed. Either quit Claude completely (check the system tray too)
+and run the two commands again, or, without quitting, update the copy in place
+and then run the second command as usual:
+
+```powershell
+git -C "$env:USERPROFILE\.claude\plugins\marketplaces\censof-tools" pull --ff-only
+```
+
+```powershell
+claude plugin update censof-mcp@censof-tools
+```
+
+The copy is a plain git checkout of this repository, so the first line brings it
+to exactly what the marketplace update would have. The second may still warn that
+the marketplace was not refreshed; the version it installs is the new one. Then
+restart Claude as usual. First seen on 13 Nov 2026 (1.1.12 to 1.1.13) and fixed
+this way.
+
+---
+
 ## If the tools vanish right after updating
 
 Run the plugin's own command by hand. The reason only appears in what it prints,
