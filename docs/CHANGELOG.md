@@ -176,6 +176,20 @@ skill.
 
 ## grp-mcp
 
+### Both Acumatica plugins at 0.81.5 - 17 Nov 2026
+
+**The classic page tools open a page only on your profile's own site.** Every `aspx_*` tool can be
+given a `page_url`, and the page is opened with your profile's signed-in session. Until now the
+address was used as given. A page on another host never received the session, but a page on another
+application of the same host could. Now a `page_url` that is not under your profile's site address is
+refused before anything is sent, the same rule the REST tools already had. A `page_url` that is only a
+path (`/Pages/...`) is refused with a pointer to leave it out and let the site map find the page; it
+never worked before either.
+
+**The notes no longer name a client.** A client's name and some real site codes had been in the notes,
+code comments and tests that ship with the plugin since July. They are replaced with invented values.
+Nothing the tools do changes.
+
 ### Both Acumatica plugins at 0.81.4 - 5 Nov 2026
 
 **A whole statement can be ticked in one call.** Nothing the plugin does has changed: `aspx_grid_batch`
